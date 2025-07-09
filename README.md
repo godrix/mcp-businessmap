@@ -24,8 +24,6 @@ To use this MCP server with your LLM, follow these steps:
 
 First, ensure you have Node.js (which includes npm) installed on your system. You can download it from [nodejs.org](https://nodejs.org/).
 
-Then, clone the repository, install dependencies, build, and run the server:
-
 ### 2. Connect to Your LLM
 
 To connect this MCP server to your LLM, you need to configure it in your `mcp.json` file. This file tells your LLM environment how to discover and interact with the MCP server.
