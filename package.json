@@ -1,0 +1,48 @@
+{
+  "name": "mcp-businessmap",
+  "version": "1.0.0",
+  "main": "./dist/server.js",
+  "bin": {
+    "mcp-businessmap": "./dist/server.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "publish": "npm run build && npm publish",
+    "dev": "npm run build && export DANGEROUSLY_OMIT_AUTH=true && npx @modelcontextprotocol/inspector node ./dist/server.js"
+  },
+  "keywords": [
+    "mcp",
+    "businessmap",
+    "kanbanize",
+    "llm",
+    "tools",
+    "server",
+    "business",
+    "boards",
+    "cards",
+    "columns"
+  ],
+  "author": "Godrix",
+  "license": "MIT",
+  "description": "MCP server for Businessmap Kanbanize, exposing tools for managing business entities like boards, cards, and columns, facilitating LLM interaction.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/godrix/mcp-businessmap.git"
+  },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.9.0",
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "typescript": "^5.8.3"
+  }
+}
