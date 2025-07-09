@@ -38,8 +38,8 @@ Add the following configuration to your `mcp.json` file:
       "command": "npx",
       "args": ["businessmap-mcp"],
       "envs": {
-        "BASE_URL": "https://example.kanbanize.com/api/v2",
-        "API_KEY": "your_api_key"
+        "BUSINESSMAP_API_URL": "https://example.kanbanize.com/api/v2",
+        "BUSINESSMAP_API_KEY": "your_BUSINESSMAP_API_KEY"
       }
     }
   ]
@@ -49,7 +49,7 @@ Add the following configuration to your `mcp.json` file:
 **Note:**
 
 - Replace `"https://example.kanbanize.com/api/v2"` with the actual base URL of the API your `businessmap-mcp` server needs to connect to.
-- Replace `"your_api_key"` with your actual API key.
+- Replace `"your_BUSINESSMAP_API_KEY"` with your actual API key.
 - The `command` and `args` specify how to run the MCP server.
 - The `envs` section provides environment variables required by the `businessmap-mcp` server for its operation.
 

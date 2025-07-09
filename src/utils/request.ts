@@ -1,10 +1,10 @@
-const BASE_URL = process.env.BASE_URL ?? "";
-const APIKEY = process.env.API_KEY ?? "";
+const BUSINESSMAP_API_URL = process.env.BUSINESSMAP_API_URL ?? "";
+const BUSINESSMAP_API_KEY = process.env.BUSINESSMAP_API_KEY ?? "";
 
 class Request {
   private baseUrl: string;
 
-  constructor(baseUrl: string = BASE_URL) {
+  constructor(baseUrl: string = BUSINESSMAP_API_URL) {
     this.baseUrl = baseUrl;
   }
 
@@ -19,7 +19,7 @@ class Request {
       method,
       headers: {
         "Content-Type": "application/json",
-        APIKEY: APIKEY,
+        APIKEY: BUSINESSMAP_API_KEY,
         ...headers,
       },
     };
