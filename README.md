@@ -36,9 +36,9 @@ Add the following configuration to your `mcp.json` file:
 {
   "servers": [
     {
-      "name": "mcp-businessmap",
+      "name": "businessmap",
       "command": "npx",
-      "args": ["mcp-businessmap"],
+      "args": ["businessmap-mcp"],
       "envs": {
         "BASE_URL": "https://example.kanbanize.com/api/v2",
         "API_KEY": "your_api_key"
@@ -50,10 +50,10 @@ Add the following configuration to your `mcp.json` file:
 
 **Note:**
 
-- Replace `"https://example.kanbanize.com/api/v2"` with the actual base URL of the API your `mcp-businessmap` server needs to connect to.
+- Replace `"https://example.kanbanize.com/api/v2"` with the actual base URL of the API your `businessmap-mcp` server needs to connect to.
 - Replace `"your_api_key"` with your actual API key.
 - The `command` and `args` specify how to run the MCP server.
-- The `envs` section provides environment variables required by the `mcp-businessmap` server for its operation.
+- The `envs` section provides environment variables required by the `businessmap-mcp` server for its operation.
 
 After configuring `mcp.json`, your LLM should be able to discover and call the tools exposed by this server (e.g., `Board Tools`, `Card Tools`). Refer to your LLM's documentation for specific instructions on how to load `mcp.json` configurations.
 
@@ -63,7 +63,7 @@ If you find this project useful, please consider giving it a star ⭐ on GitHub!
 
 ### Reporting Issues
 
-If you encounter any bugs or have feature requests, please open an issue on the [GitHub Issues page](https://github.com/godrix/mcp-businessmap/issues).
+If you encounter any bugs or have feature requests, please open an issue on the [GitHub Issues page](https://github.com/godrix/businessmap-mcp/issues).
 
 ### Contributing
 

@@ -1,9 +1,9 @@
 {
-  "name": "mcp-businessmap",
+  "name": "businessmap-mcp",
   "version": "1.0.0",
   "main": "./dist/server.js",
   "bin": {
-    "mcp-businessmap": "./dist/server.js"
+    "businessmap-mcp": "./dist/server.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -28,7 +28,7 @@
   "description": "MCP server for Businessmap Kanbanize, exposing tools for managing business entities like boards, cards, and columns, facilitating LLM interaction.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/godrix/mcp-businessmap.git"
+    "url": "https://github.com/godrix/businessmap-mcp.git"
   },
   "files": [
     "dist/",
