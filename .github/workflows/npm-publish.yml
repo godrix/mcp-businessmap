@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: "18"
           registry-url: "https://registry.npmjs.org/"
+          node-auth-token: ${{ secrets.NPM_TOKEN }}
 
       - name: Debug package.json
         run: cat package.json
@@ -29,23 +30,11 @@ jobs:
       - name: Build TypeScript
         run: npm run build
 
-      - name: Set package version from tag
-        run: |
-          TAG=${GITHUB_REF#refs/tags/v}
-          npm version $TAG --no-git-tag-version
-          echo "Publishing version $TAG"
-
       - name: List files for debugging
         run: |
           ls -la
           ls -la src || true
           ls -la dist || true
-
-      - name: Create .npmrc file
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: List files to be published
         run: npm pack --dry-run
