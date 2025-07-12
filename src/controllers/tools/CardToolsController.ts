@@ -2,7 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { apiServices } from "../../services/ApiService";
 import { handleApiResponse } from "../../utils/apiResponseHandler";
-
+import { env } from "../../utils/env";
 export class CardToolsController {
   constructor(private server: McpServer) {
     this.registerTools();
@@ -11,6 +11,12 @@ export class CardToolsController {
   private registerTools(): void {
     this.registerGetCardToolhandler();
     this.registerGetCardsToolhandler();
+
+    if (!env.BUSINESSMAP_READ_ONLY) {
+      this.registerCreateCardToolhandler();
+      this.registerUpdateCardToolhandler();
+      this.registerDeleteCardToolhandler();
+    }
   }
 
   private registerGetCardToolhandler(): void {
@@ -77,6 +83,99 @@ export class CardToolsController {
           is_blocked,
           card_ids,
         });
+
+        return handleApiResponse(response);
+      }
+    );
+  }
+  private registerCreateCardToolhandler(): void {
+    this.server.tool(
+      "create-card",
+      "Create a card",
+      {
+        board_id: z.number().describe("Board id"),
+        workflow_id: z.number().describe("Workflow id"),
+        lane_id: z.number().describe("Lane id"),
+        column_id: z.number().describe("Column id"),
+        title: z.string().describe("Card title"),
+        description: z.string().describe("Card description"),
+        priority: z.number().describe("Card priority'"),
+        assignee_ids: z
+          .string()
+          .describe("Comma-separated list of assignee Ids"),
+      },
+      async ({
+        board_id,
+        title,
+        description,
+        assignee_ids,
+        priority,
+        column_id,
+        lane_id,
+        workflow_id,
+      }): Promise<any> => {
+        const response = await apiServices.createCard(
+          board_id,
+          title,
+          description,
+          assignee_ids,
+          priority,
+          column_id,
+          lane_id,
+          workflow_id
+        );
+
+        return handleApiResponse(response);
+      }
+    );
+  }
+  private registerUpdateCardToolhandler(): void {
+    this.server.tool(
+      "update-card",
+      "Update an existing card",
+      {
+        card_id: z.string().describe("Board id"),
+        title: z.string().describe("Card title"),
+        description: z.string().describe("Card description"),
+        column_id: z.number().describe("Column id"),
+        priority: z.number().describe("Card priority'"),
+        lane_id: z.number().describe("Lane id"),
+        assignee_ids: z
+          .string()
+          .describe("Comma-separated list of assignee Ids"),
+      },
+      async ({
+        card_id,
+        title,
+        description,
+        assignee_ids,
+        priority,
+        column_id,
+        lane_id,
+      }): Promise<any> => {
+        const response = await apiServices.updateCard(
+          card_id,
+          title,
+          description,
+          assignee_ids,
+          priority,
+          column_id,
+          lane_id
+        );
+
+        return handleApiResponse(response);
+      }
+    );
+  }
+  private registerDeleteCardToolhandler(): void {
+    this.server.tool(
+      "delete-card",
+      "Delete a card",
+      {
+        card_id: z.string().describe("A card id"),
+      },
+      async ({ card_id }): Promise<any> => {
+        const response = await apiServices.deleteCard(card_id);
 
         return handleApiResponse(response);
       }

@@ -1,5 +1,4 @@
 export * from "./ApiLimitsToolsController";
-export * from "./MeToolsController";
 export * from "./CardToolsController";
 export * from "./CardCommentsToolsController";
 export * from "./CardCoOwnersToolsController";

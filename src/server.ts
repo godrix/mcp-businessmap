@@ -2,7 +2,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
-  MeToolsController,
   ApiLimitsToolsController,
   CardToolsController,
   CardCommentsToolsController,
@@ -12,17 +11,17 @@ import {
   BoardToolsController,
   ColumnsToolsController,
 } from "./controllers/tools";
+import { MeResourcesController } from "./controllers/resources";
 import "dotenv/config";
-
+import { env } from "./utils/env";
 async function main() {
   // Server MCP
   const server = new McpServer({
     name: "mcp-bussinessmap",
-    version: "1.0.1",
+    version: "1.1.0",
   });
 
   // Tools
-  new MeToolsController(server);
   new ApiLimitsToolsController(server);
   new CardToolsController(server);
   new CardCommentsToolsController(server);
@@ -33,12 +32,17 @@ async function main() {
   new ColumnsToolsController(server);
 
   // Resources
+  new MeResourcesController(server);
 
   // Prompts
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("Businessmap MCP Server running on stdio");
+  console.error(
+    `Businessmap MCP Server running on stdio - ${
+      env.BUSINESSMAP_READ_ONLY ? "Read only" : "All operations available"
+    }`
+  );
 }
 
 main().catch((error) => {

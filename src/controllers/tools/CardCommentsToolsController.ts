@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { apiServices } from "../../services/ApiService";
 import { handleApiResponse } from "../../utils/apiResponseHandler";
+import { env } from "../../utils/env";
 
 export class CardCommentsToolsController {
   constructor(private server: McpServer) {
@@ -10,10 +11,12 @@ export class CardCommentsToolsController {
 
   private registerTools(): void {
     this.registerGetCardCommentsToolhandler();
-    this.registerAddCardCommentToolhandler();
     this.registerGetCardCommentToolhandler();
-    this.registerUpdateCardCommentToolhandler();
-    this.registerDeleteCardCommentToolhandler();
+    if (!env.BUSINESSMAP_READ_ONLY) {
+      this.registerAddCardCommentToolhandler();
+      this.registerUpdateCardCommentToolhandler();
+      this.registerDeleteCardCommentToolhandler();
+    }
   }
 
   private registerGetCardCommentsToolhandler(): void {

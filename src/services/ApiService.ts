@@ -70,6 +70,72 @@ class ApiServices extends Request {
       return this.handleError(error);
     }
   }
+  async createCard(
+    board_id: number,
+    title: string,
+    description: string,
+    assignee_ids: string,
+    priority: number,
+    column_id: number,
+    lane_id: number,
+    workflow_id: number
+  ): Promise<{
+    data?: Card;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.post<Card>(`/cards`, {
+        board_id,
+        title,
+        description,
+        assignee_ids,
+        priority,
+        column_id,
+        lane_id,
+        workflow_id,
+      });
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+  async updateCard(
+    card_id: string,
+    title: string,
+    description: string,
+    assignee_ids: string,
+    priority: number,
+    column_id: number,
+    lane_id: number
+  ): Promise<{
+    data?: Card;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.patch<Card>(`/cards/${card_id}`, {
+        title,
+        description,
+        assignee_ids,
+        priority,
+        column_id,
+        lane_id,
+      });
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+  async deleteCard(cardId: string): Promise<{
+    data?: string;
+    error?: Error;
+  }> {
+    try {
+      await this.delete<Card>(`/cards/${cardId}`);
+      return { data: "The card has been deleted" };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
   async getCards(props: {
     state: string;
     board_ids?: string;
