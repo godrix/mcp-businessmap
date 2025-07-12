@@ -43,7 +43,7 @@ Add the following configuration to your `mcp.json` file:
       "envs": {
         "BUSINESSMAP_API_URL": "https://example.kanbanize.com/api/v2",
         "BUSINESSMAP_API_KEY": "your_businessmap_api_key"
-        // "BUSINESSMAP_READ_ONLY": "true" optional default value in true
+        // "BUSINESSMAP_READ_ONLY": "true" optional default value in false
       }
     }
   ]
