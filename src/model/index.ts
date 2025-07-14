@@ -1,5 +1,5 @@
 export * from "./ApiLimits";
-export * from "./Me";
+export * from "./User";
 export * from "./Card";
 export * from "./CardComment";
 export * from "./Error";

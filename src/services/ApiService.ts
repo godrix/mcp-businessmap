@@ -1,5 +1,5 @@
 import {
-  Me,
+  User,
   ApiLimits,
   Card,
   CardComment,
@@ -38,11 +38,11 @@ class ApiServices extends Request {
   }
 
   async getMe(): Promise<{
-    data?: Me;
+    data?: User;
     error?: Error;
   }> {
     try {
-      const data = await this.get<Me>("/me");
+      const data = await this.get<User>("/me");
       return { data };
     } catch (error) {
       return this.handleError(error);
@@ -407,6 +407,17 @@ class ApiServices extends Request {
   }> {
     try {
       const data = await this.get<Board>(`/boards/${boardId}`);
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+  async getUser(user_id: string): Promise<{
+    data?: User;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.get<User>(`/users/${user_id}`);
       return { data };
     } catch (error) {
       return this.handleError(error);

@@ -13,7 +13,8 @@ The server provides the following tools, accessible via the MCP:
 - **Card Linked Cards Tools**: Manage relationships between linked cards.
 - **Card Subtasks Tools**: Manage subtasks within cards.
 - **Card Tools**: General tools for managing and interacting with cards.
-- **Columns Tools**: Interact with and manage columns within boards.
+- **Column Tools**: Interact with and manage columns within boards.
+- **User Tools**: Interact with and manage users.
 
 ## Resources Provided
 
@@ -39,7 +40,7 @@ Add the following configuration to your `mcp.json` file:
     {
       "name": "businessmap",
       "command": "npx",
-      "args": ["businessmap-mcp"],
+      "args": ["businessmap-mcp", "-y"],
       "envs": {
         "BUSINESSMAP_API_URL": "https://example.kanbanize.com/api/v2",
         "BUSINESSMAP_API_KEY": "your_businessmap_api_key"

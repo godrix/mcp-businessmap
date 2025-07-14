@@ -9,7 +9,8 @@ import {
   CardLinkedCardsToolsController,
   CardSubtasksToolsController,
   BoardToolsController,
-  ColumnsToolsController,
+  ColumnToolsController,
+  UserToolsController,
 } from "./controllers/tools";
 import { MeResourcesController } from "./controllers/resources";
 import "dotenv/config";
@@ -18,7 +19,7 @@ async function main() {
   // Server MCP
   const server = new McpServer({
     name: "mcp-bussinessmap",
-    version: "1.1.0",
+    version: "1.2.0",
   });
 
   // Tools
@@ -29,7 +30,8 @@ async function main() {
   new CardLinkedCardsToolsController(server);
   new CardSubtasksToolsController(server);
   new BoardToolsController(server);
-  new ColumnsToolsController(server);
+  new ColumnToolsController(server);
+  new UserToolsController(server);
 
   // Resources
   new MeResourcesController(server);

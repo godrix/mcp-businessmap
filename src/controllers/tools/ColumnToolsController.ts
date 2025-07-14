@@ -3,7 +3,7 @@ import { z } from "zod";
 import { apiServices } from "../../services/ApiService";
 import { handleApiResponse } from "../../utils/apiResponseHandler";
 
-export class ColumnsToolsController {
+export class ColumnToolsController {
   constructor(private server: McpServer) {
     this.registerTools();
   }

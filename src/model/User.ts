@@ -1,4 +1,4 @@
-export interface Me {
+export interface User {
   data: Data;
 }
 

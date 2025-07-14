@@ -5,4 +5,5 @@ export * from "./CardCoOwnersToolsController";
 export * from "./CardLinkedCardsToolsController";
 export * from "./CardSubtasksToolsController";
 export * from "./BoardToolsController";
-export * from "./ColumnsToolsController";
+export * from "./ColumnToolsController";
+export * from "./UserToolsController";

@@ -1,5 +1,25 @@
 # Changelog
 
+## Version 1.2.0 - 2025-07-14
+
+This release focuses on improving user management capabilities and refining existing tools.
+
+### New Features
+
+- **User Tools**:
+  - `get-user`: A new tool to retrieve details of a specific user by ID.
+
+### Improvements
+
+- **Tool Renaming**:
+  - `ColumnsToolsController` has been renamed to `ColumnToolsController` for better naming consistency (singular form).
+- **Model Refactoring**:
+  - The `Me` model has been replaced by the more generic `User` model, improving data structure consistency.
+
+### Version Update
+
+- The package version has been updated from `1.1.0` to `1.2.0`.
+
 ## Version 1.1.0 - 2025-07-12
 
 This release introduces new functionalities for card management, a read-only mode for the server, and refactors user information retrieval.
