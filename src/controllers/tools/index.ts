@@ -7,3 +7,4 @@ export * from "./CardSubtasksToolsController";
 export * from "./BoardToolsController";
 export * from "./ColumnToolsController";
 export * from "./UserToolsController";
+export * from "./WorkspacesToolsController";

@@ -15,6 +15,7 @@ The server provides the following tools, accessible via the MCP:
 - **Card Tools**: General tools for managing and interacting with cards.
 - **Column Tools**: Interact with and manage columns within boards.
 - **User Tools**: Interact with and manage users.
+- **Workspace Tools**: Interact with and manage workspaces.
 
 ## Resources Provided
 
@@ -74,7 +75,7 @@ If you find this project useful, please consider giving it a star ⭐ on GitHub!
 
 ### Reporting Issues
 
-If you encounter any bugs or have feature requests, please open an issue on the [GitHub Issues page](https://github.com/godrix/businessmap-mcp/issues).
+If you encounter any bugs or have feature requests, please open an issue on the [GitHub Issues page](https://github.com/godrix/mcp-businessmap/issues).
 
 ### Contributing
 

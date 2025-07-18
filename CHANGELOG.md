@@ -1,5 +1,24 @@
 # Changelog
 
+## Version 1.3.0 - 2025-07-18
+
+This release introduces workspace management tools, allowing for interaction with workspaces within Businessmap.
+
+### New Features
+
+- **Workspace Tools**:
+  - `get-workspace`: A new tool to retrieve details of a specific workspace by ID.
+
+### Improvements
+
+- **Codebase Refinements**:
+  - Added `WorkspacesToolsController` to manage workspace-related tools.
+  - Integrated `getWorkspace` method into `ApiService` to support fetching workspace data.
+
+### Version Update
+
+- The package version has been updated from `1.2.0` to `1.3.0`.
+
 ## Version 1.2.0 - 2025-07-14
 
 This release focuses on improving user management capabilities and refining existing tools.

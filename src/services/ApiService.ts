@@ -13,6 +13,7 @@ import {
   Board,
   Columns,
   Column,
+  Workspace
 } from "../model";
 import Request from "../utils/request";
 
@@ -444,6 +445,21 @@ class ApiServices extends Request {
     try {
       const data = await this.get<Column>(
         `/boards/${boardId}/columns/${columnId}`
+      );
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+  async getWorkspace(
+    workspaceId: string
+  ): Promise<{
+    data?: Workspace;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.get<Workspace>(
+        `/workspace/${workspaceId}`
       );
       return { data };
     } catch (error) {

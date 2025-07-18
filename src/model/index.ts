@@ -8,3 +8,4 @@ export * from "./LinkedCards";
 export * from "./CardSubtasks";
 export * from "./Board";
 export * from "./Columns";
+export * from "./Workspace";
