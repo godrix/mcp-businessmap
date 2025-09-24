@@ -454,7 +454,7 @@ class ApiServices extends Request {
       return this.handleError(error);
     }
   }
-<<<<<<< HEAD
+  
   async getWorkspace(
     workspaceId: string
   ): Promise<{
@@ -465,7 +465,11 @@ class ApiServices extends Request {
       const data = await this.get<Workspace>(
         `/workspace/${workspaceId}`
       );
-=======
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
   
   async getLanes(boardId: string): Promise<{
     data?: Lanes;
@@ -473,14 +477,11 @@ class ApiServices extends Request {
   }> {
     try {
       const data = await this.get<Lanes>(`/boards/${boardId}/lanes`);
->>>>>>> a830180 (feat: Add Lane Tools and get-me tool)
       return { data };
     } catch (error) {
       return this.handleError(error);
     }
   }
-<<<<<<< HEAD
-=======
   
   async getLane(laneId: string): Promise<{
     data?: Lane;
@@ -535,7 +536,6 @@ class ApiServices extends Request {
       return this.handleError(error);
     }
   }
->>>>>>> a830180 (feat: Add Lane Tools and get-me tool)
 }
 
 export const apiServices = new ApiServices();
