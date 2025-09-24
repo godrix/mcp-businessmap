@@ -13,6 +13,9 @@ import {
   Board,
   Columns,
   Column,
+  Lanes,
+  Lane,
+  CreateLaneParams,
   Workspace
 } from "../model";
 import Request from "../utils/request";
@@ -451,6 +454,7 @@ class ApiServices extends Request {
       return this.handleError(error);
     }
   }
+<<<<<<< HEAD
   async getWorkspace(
     workspaceId: string
   ): Promise<{
@@ -461,11 +465,77 @@ class ApiServices extends Request {
       const data = await this.get<Workspace>(
         `/workspace/${workspaceId}`
       );
+=======
+  
+  async getLanes(boardId: string): Promise<{
+    data?: Lanes;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.get<Lanes>(`/boards/${boardId}/lanes`);
+>>>>>>> a830180 (feat: Add Lane Tools and get-me tool)
       return { data };
     } catch (error) {
       return this.handleError(error);
     }
   }
+<<<<<<< HEAD
+=======
+  
+  async getLane(laneId: string): Promise<{
+    data?: Lane;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.get<Lane>(`/lanes/${laneId}`);
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+  
+  async createLane(
+    boardId: string,
+    params: CreateLaneParams
+  ): Promise<{
+    data?: Lane;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.post<Lane>(`/boards/${boardId}/lanes`, params);
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+  
+  async updateLane(
+    laneId: string,
+    params: Partial<CreateLaneParams>
+  ): Promise<{
+    data?: Lane;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.patch<Lane>(`/lanes/${laneId}`, params);
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+  
+  async deleteLane(laneId: string): Promise<{
+    data?: string;
+    error?: Error;
+  }> {
+    try {
+      await this.delete<Lane>(`/lanes/${laneId}`);
+      return { data: "The lane has been deleted" };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+>>>>>>> a830180 (feat: Add Lane Tools and get-me tool)
 }
 
 export const apiServices = new ApiServices();

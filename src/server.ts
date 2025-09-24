@@ -10,6 +10,7 @@ import {
   CardSubtasksToolsController,
   BoardToolsController,
   ColumnToolsController,
+  LaneToolsController,
   UserToolsController,
   WorkspacesToolsController
 } from "./controllers/tools";
@@ -32,6 +33,7 @@ async function main() {
   new CardSubtasksToolsController(server);
   new BoardToolsController(server);
   new ColumnToolsController(server);
+  new LaneToolsController(server);
   new UserToolsController(server);
   new WorkspacesToolsController(server);
 

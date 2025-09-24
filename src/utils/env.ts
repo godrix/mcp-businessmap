@@ -8,12 +8,14 @@ const createEnv = () => {
       .string()
       .default("")
       .transform((val) => val === "true"),
+    BUSINESSMAP_DEFAULT_WORKSPACE_ID: z.string().optional(),
   });
 
   const envVars = {
     BUSINESSMAP_API_URL: process.env.BUSINESSMAP_API_URL,
     BUSINESSMAP_API_KEY: process.env.BUSINESSMAP_API_KEY,
     BUSINESSMAP_READ_ONLY: process.env.BUSINESSMAP_READ_ONLY,
+    BUSINESSMAP_DEFAULT_WORKSPACE_ID: process.env.BUSINESSMAP_DEFAULT_WORKSPACE_ID,
   };
 
   const parsedEnv = EnvSchema.safeParse(envVars);

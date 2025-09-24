@@ -14,6 +14,7 @@ The server provides the following tools, accessible via the MCP:
 - **Card Subtasks Tools**: Manage subtasks within cards.
 - **Card Tools**: General tools for managing and interacting with cards.
 - **Column Tools**: Interact with and manage columns within boards.
+- **Lane Tools**: Interact with and manage lanes within boards.
 - **User Tools**: Interact with and manage users.
 - **Workspace Tools**: Interact with and manage workspaces.
 
@@ -46,19 +47,27 @@ Add the following configuration to your `mcp.json` file:
         "BUSINESSMAP_API_URL": "https://example.kanbanize.com/api/v2",
         "BUSINESSMAP_API_KEY": "your_businessmap_api_key"
         // "BUSINESSMAP_READ_ONLY": "true" optional default value in false
+        // "BUSINESSMAP_DEFAULT_WORKSPACE_ID": "123" optional - Set the BusinessMap workspace ID
       }
     }
   ]
 }
 ```
 
-### `BUSINESSMAP_READ_ONLY` Environment Variable
+### Environment Variables
+
+#### `BUSINESSMAP_READ_ONLY`
 
 - **Purpose**: This optional environment variable controls if the server operates in reading mode only.
 - **Default value**: `false` (changeable operations are enabled by default).
 - **Behavior**: If defined as `true`, all tools that perform changeable operations (such as creating, updating and deleting cards, comments, co-owners and subtasking) will be disabled.This ensures that the server only recovers data and does not modify any entity in BusinessMap.
 
-```
+#### `BUSINESSMAP_DEFAULT_WORKSPACE_ID`
+
+- **Purpose**: This optional environment variable sets the default BusinessMap workspace ID to be used by the server.
+- **Default value**: `undefined` (no default workspace ID).
+- **Behavior**: When defined, this workspace ID will be used as the default workspace for operations that require a workspace context. This can help streamline operations by avoiding the need to specify the workspace ID repeatedly.
+
 
 **Note:**
 

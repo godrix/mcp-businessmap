@@ -6,5 +6,6 @@ export * from "./CardLinkedCardsToolsController";
 export * from "./CardSubtasksToolsController";
 export * from "./BoardToolsController";
 export * from "./ColumnToolsController";
+export * from "./LaneToolsController";
 export * from "./UserToolsController";
 export * from "./WorkspacesToolsController";
