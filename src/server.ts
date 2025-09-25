@@ -12,7 +12,8 @@ import {
   ColumnToolsController,
   LaneToolsController,
   UserToolsController,
-  WorkspacesToolsController
+  WorkspacesToolsController,
+  SystemToolsController
 } from "./controllers/tools";
 import { MeResourcesController } from "./controllers/resources";
 import "dotenv/config";
@@ -21,7 +22,7 @@ async function main() {
   // Server MCP
   const server = new McpServer({
     name: "mcp-bussinessmap",
-    version: "1.3.0",
+    version: "1.4.0",
   });
 
   // Tools
@@ -36,6 +37,7 @@ async function main() {
   new LaneToolsController(server);
   new UserToolsController(server);
   new WorkspacesToolsController(server);
+  new SystemToolsController(server);
 
   // Resources
   new MeResourcesController(server);

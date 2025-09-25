@@ -114,16 +114,16 @@ export class CardToolsController {
         lane_id,
         workflow_id,
       }): Promise<any> => {
-        const response = await apiServices.createCard(
+        const response = await apiServices.createCard({
           board_id,
-          title,
-          description,
-          assignee_ids,
-          priority,
+          workflow_id,
           column_id,
           lane_id,
-          workflow_id
-        );
+          title,
+          description,
+          priority,
+          owner_user_id: assignee_ids ? parseInt(assignee_ids.split(',')[0]) : undefined,
+        });
 
         return handleApiResponse(response);
       }

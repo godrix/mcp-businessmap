@@ -74,30 +74,40 @@ class ApiServices extends Request {
       return this.handleError(error);
     }
   }
-  async createCard(
-    board_id: number,
-    title: string,
-    description: string,
-    assignee_ids: string,
-    priority: number,
-    column_id: number,
-    lane_id: number,
-    workflow_id: number
-  ): Promise<{
+  async createCard(cardData: {
+    board_id?: number;
+    workflow_id?: number;
+    column_id: number;
+    lane_id: number;
+    title: string;
+    description: string;
+    priority: number;
+    owner_user_id?: number;
+  }): Promise<{
     data?: Card;
     error?: Error;
   }> {
     try {
-      const data = await this.post<Card>(`/cards`, {
-        board_id,
-        title,
-        description,
-        assignee_ids,
-        priority,
-        column_id,
-        lane_id,
-        workflow_id,
-      });
+
+      const queryParams = new URLSearchParams();
+      if (cardData.board_id) {
+        queryParams.append('board_id', cardData.board_id.toString());
+      }
+      if (cardData.workflow_id) {
+        queryParams.append('workflow_id', cardData.workflow_id.toString());
+      }
+      
+      const requestBody = {
+        column_id: cardData.column_id,
+        lane_id: cardData.lane_id,
+        title: cardData.title,
+        description: cardData.description,
+        priority: cardData.priority,
+        ...(cardData.owner_user_id && { owner_user_id: cardData.owner_user_id }),
+      };
+
+      const url = queryParams.toString() ? `/cards?${queryParams.toString()}` : '/cards';
+      const data = await this.post<Card>(url, requestBody);
       return { data };
     } catch (error) {
       return this.handleError(error);
@@ -343,15 +353,23 @@ class ApiServices extends Request {
 
   async addCardSubtask(
     cardId: string,
-    description: string
+    description: string,
+    owner_user_id?: number,
+    is_finished?: number,
+    deadline?: string,
+    position?: number
   ): Promise<{
-    data?: CardSubtasks;
+    data?: CardSubtask;
     error?: Error;
   }> {
     try {
-      const data = await this.post<CardSubtasks>(`/cards/${cardId}/subtasks`, {
-        description,
-      });
+      const requestBody: any = { description };
+      if (owner_user_id !== undefined) requestBody.owner_user_id = owner_user_id;
+      if (is_finished !== undefined) requestBody.is_finished = is_finished;
+      if (deadline !== undefined) requestBody.deadline = deadline;
+      if (position !== undefined) requestBody.position = position;
+
+      const data = await this.post<CardSubtask>(`/cards/${cardId}/subtasks`, requestBody);
       return { data };
     } catch (error) {
       return this.handleError(error);
@@ -361,19 +379,26 @@ class ApiServices extends Request {
   async updateCardSubtask(
     cardId: string,
     subtaskId: string,
-    description: string,
-    isFinished: number
+    description?: string,
+    isFinished?: number,
+    owner_user_id?: number,
+    deadline?: string,
+    position?: number
   ): Promise<{
     data?: CardSubtask;
     error?: Error;
   }> {
     try {
+      const requestBody: any = {};
+      if (description !== undefined) requestBody.description = description;
+      if (isFinished !== undefined) requestBody.is_finished = isFinished;
+      if (owner_user_id !== undefined) requestBody.owner_user_id = owner_user_id;
+      if (deadline !== undefined) requestBody.deadline = deadline;
+      if (position !== undefined) requestBody.position = position;
+
       const data = await this.patch<CardSubtask>(
         `/cards/${cardId}/subtasks/${subtaskId}`,
-        {
-          description,
-          is_finished: isFinished,
-        }
+        requestBody
       );
       return { data };
     } catch (error) {

@@ -15,6 +15,7 @@ The server provides the following tools, accessible via the MCP:
 - **Card Tools**: General tools for managing and interacting with cards.
 - **Column Tools**: Interact with and manage columns within boards.
 - **Lane Tools**: Interact with and manage lanes within boards.
+- **System Tools**: Monitor server health, version information, and environment configuration.
 - **User Tools**: Interact with and manage users.
 - **Workspace Tools**: Interact with and manage workspaces.
 
@@ -23,6 +24,32 @@ The server provides the following tools, accessible via the MCP:
 The server provides the following resources, accessible via the MCP:
 
 - **User Info**: Retrieve data about the active user (`user://me`).
+
+## System Tools
+
+The server includes system monitoring and debugging tools:
+
+### `get-mcp-version`
+Retrieves comprehensive server information including:
+- Server name and version
+- MCP SDK version
+- Node.js version and platform details
+- Memory usage statistics
+- Environment configuration with masked API key
+- Default workspace ID status
+
+### `get-system-health`
+Monitors system health and configuration:
+- Overall health status (healthy/warning)
+- Uptime information (seconds and human-readable format)
+- Memory usage breakdown
+- Environment variables status (required/optional)
+- API key masking for security
+- Configuration validation
+
+These tools are essential for debugging, monitoring, and ensuring proper server configuration.
+
+## Getting Started
 
 To use this MCP server with your LLM, follow these steps:
 
