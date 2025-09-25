@@ -22,7 +22,7 @@ async function main() {
   // Server MCP
   const server = new McpServer({
     name: "mcp-bussinessmap",
-    version: "1.4.0",
+    version: "1.4.1",
   });
 
   // Tools
