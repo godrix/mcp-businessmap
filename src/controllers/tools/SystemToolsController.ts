@@ -9,7 +9,6 @@ export class SystemToolsController {
 
   private registerTools(): void {
     this.registerGetMcpVersionToolhandler();
-    this.registerGetSystemInfoToolhandler();
   }
 
   private registerGetMcpVersionToolhandler(): void {
@@ -54,81 +53,6 @@ export class SystemToolsController {
     );
   }
 
-  private registerGetSystemInfoToolhandler(): void {
-    this.server.tool(
-      "get-system-health",
-      "Get system health and status information",
-      {
-        random_string: z.string().describe("Dummy parameter for no-parameter tools"),
-      },
-      async (): Promise<any> => {
-        try {
-          const memUsage = process.memoryUsage();
-          const uptime = process.uptime();
-          
-          const requiredEnvVars = ['BUSINESSMAP_API_KEY', 'BUSINESSMAP_API_URL'];
-          const optionalEnvVars = ['BUSINESSMAP_DEFAULT_WORKSPACE_ID', 'BUSINESSMAP_READ_ONLY'];
-          
-          const envStatus = [
-            ...requiredEnvVars.map(varName => ({
-              name: varName,
-              required: true,
-              configured: !!process.env[varName],
-              value_length: process.env[varName]?.length || 0,
-              masked_value: varName.includes('KEY') ? this.maskApiKey(process.env[varName] || '') : undefined
-            })),
-            ...optionalEnvVars.map(varName => ({
-              name: varName,
-              required: false,
-              configured: !!process.env[varName],
-              value_length: process.env[varName]?.length || 0,
-              current_value: varName === 'BUSINESSMAP_DEFAULT_WORKSPACE_ID' ? 
-                (process.env[varName] || 'não configurado') : 
-                process.env[varName] || 'não configurado'
-            }))
-          ];
-
-          const healthStatus = {
-            status: "healthy",
-            uptime_seconds: uptime,
-            uptime_human: this.formatUptime(uptime),
-            memory: {
-              used_mb: Math.round(memUsage.heapUsed / 1024 / 1024),
-              total_mb: Math.round(memUsage.heapTotal / 1024 / 1024),
-              external_mb: Math.round(memUsage.external / 1024 / 1024),
-              rss_mb: Math.round(memUsage.rss / 1024 / 1024)
-            },
-            environment_variables: envStatus,
-            configuration: {
-              read_only_mode: env.BUSINESSMAP_READ_ONLY,
-              api_url: env.BUSINESSMAP_API_URL,
-              default_workspace_id: env.BUSINESSMAP_DEFAULT_WORKSPACE_ID || "não configurado",
-              node_env: process.env.NODE_ENV || "production"
-            }
-          };
-
-          // Determinar status geral
-          const hasRequiredEnv = envStatus
-            .filter(env => env.required)
-            .every(env => env.configured);
-          if (!hasRequiredEnv) {
-            healthStatus.status = "warning";
-          }
-
-          return {
-            data: healthStatus
-          };
-        } catch (error) {
-          return {
-            error: {
-              message: `Failed to get system health: ${error instanceof Error ? error.message : 'Unknown error'}`,
-              code: "SYSTEM_HEALTH_ERROR"
-            }
-          };
-        }
-      }
-    );
-  }
 
   private async getServerVersion(): Promise<string> {
     try {
@@ -171,20 +95,4 @@ export class SystemToolsController {
     return `${start}${middle}${end}`;
   }
 
-  private formatUptime(seconds: number): string {
-    const days = Math.floor(seconds / 86400);
-    const hours = Math.floor((seconds % 86400) / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = Math.floor(seconds % 60);
-
-    if (days > 0) {
-      return `${days}d ${hours}h ${minutes}m ${secs}s`;
-    } else if (hours > 0) {
-      return `${hours}h ${minutes}m ${secs}s`;
-    } else if (minutes > 0) {
-      return `${minutes}m ${secs}s`;
-    } else {
-      return `${secs}s`;
-    }
-  }
 }
