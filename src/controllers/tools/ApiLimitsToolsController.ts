@@ -17,7 +17,7 @@ export class ApiLimitsToolsController {
       "get-api-limits",
       "Get the hourly and minutely limits for the api requests",
       async (): Promise<any> => {
-        const response = await apiServices.getMe();
+        const response = await apiServices.getApiLimits();
 
         return handleApiResponse(response);
       }

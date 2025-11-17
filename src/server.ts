@@ -21,8 +21,8 @@ import { env } from "./utils/env";
 async function main() {
   // Server MCP
   const server = new McpServer({
-    name: "mcp-bussinessmap",
-    version: "1.4.1",
+    name: "mcp-businessmap",
+    version: "1.5.0",
   });
 
   // Tools

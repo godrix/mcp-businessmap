@@ -39,31 +39,34 @@ export class CardToolsController {
       "Get a list of cards matching some optional criteria",
       {
         state: z
-          .string()
+          .enum(["active", "archived", "discarded"])
           .describe(
-            "The state value of cards that you want to get. By default it's the active state. Available values : active, archived, discarded"
+            "The state value of cards that you want to get. By default it's the active state. Available values: active, archived, discarded"
           )
           .default("active"),
         board_ids: z
           .string()
           .describe(
-            "A list of the board ids for which you want to get the results. Separated by Virgula Example 123,888"
+            "A list of the board ids for which you want to get the results. Separated by comma. Example: 123,888"
           )
           .optional(),
         owner_user_ids: z
           .string()
           .describe(
-            "A list of the user ids of assignees for which you want to get the results. Separated by Virgula Example 123,888"
+            "A list of the user ids of assignees for which you want to get the results. Separated by comma. Example: 123,888"
           )
           .optional(),
         card_ids: z
           .string()
           .describe(
-            "A list of the card ids that you want to get. Separated by Virgula Example 123,888"
+            "A list of the card ids that you want to get. Separated by comma. Example: 123,888"
           )
           .optional(),
         is_blocked: z
           .number()
+          .int()
+          .min(0)
+          .max(1)
           .default(0)
           .describe(
             "When set to 1 you will only get blocked cards. When set to 0 you will only get non blocked cards."
