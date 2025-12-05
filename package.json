@@ -1,6 +1,6 @@
 {
   "name": "businessmap-mcp",
-  "version": "1.5.0",
+  "version": "1.7.0",
   "main": "./dist/server.js",
   "bin": {
     "businessmap-mcp": "./dist/server.js"
@@ -9,7 +9,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "prepare": "npm run build",
-    "dev": "npm run build && export DANGEROUSLY_OMIT_AUTH=true && npx @modelcontextprotocol/inspector node ./dist/server.js"
+    "dev": "npm run build && export DANGEROUSLY_OMIT_AUTH=true && npx @modelcontextprotocol/inspector node ./dist/server.js",
+    "publish:next": "npm run build && npm publish --tag next",
+    "publish:latest": "npm run build && npm publish --tag latest",
+    "version:next": "npm version prerelease --preid=next",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major"
   },
   "keywords": [
     "mcp",

@@ -16,6 +16,7 @@ import {
   SystemToolsController
 } from "./controllers/tools";
 import { MeResourcesController } from "./controllers/resources";
+import { FormattedContentPromptsController } from "./controllers/prompts";
 import "dotenv/config";
 import { env } from "./utils/env";
 async function main() {
@@ -43,6 +44,7 @@ async function main() {
   new MeResourcesController(server);
 
   // Prompts
+  new FormattedContentPromptsController(server);
 
   const transport = new StdioServerTransport();
   await server.connect(transport);

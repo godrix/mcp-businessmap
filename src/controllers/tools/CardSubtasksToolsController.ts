@@ -3,6 +3,7 @@ import { z } from "zod";
 import { apiServices } from "../../services/ApiService";
 import { handleApiResponse } from "../../utils/apiResponseHandler";
 import { env } from "../../utils/env";
+import { formatContentToHtml } from "../../utils/htmlFormatter";
 
 export class CardSubtasksToolsController {
   constructor(private server: McpServer) {
@@ -14,7 +15,9 @@ export class CardSubtasksToolsController {
     this.registerGetCardSubtaskToolhandler();
     if (!env.BUSINESSMAP_READ_ONLY) {
       this.registerAddCardSubtaskToolhandler();
+      this.registerAddFormattedCardSubtaskToolhandler();
       this.registerUpdateCardSubtaskToolhandler();
+      this.registerUpdateFormattedCardSubtaskToolhandler();
       this.registerDeleteCardSubtaskToolhandler();
     }
   }
@@ -95,6 +98,67 @@ export class CardSubtasksToolsController {
       },
       async ({ cardId, subtaskId }): Promise<any> => {
         const response = await apiServices.deleteCardSubtask(cardId, subtaskId);
+
+        return handleApiResponse(response);
+      }
+    );
+  }
+
+  /**
+   * Diferente dos comentários, as subtasks aceitam HTML diretamente na criação e atualização.
+   * Não é necessário criar primeiro e atualizar depois - pode criar diretamente com HTML formatado.
+   */
+  private registerAddFormattedCardSubtaskToolhandler(): void {
+    this.server.tool(
+      "add-formatted-card-subtask",
+      "Add a formatted subtask to a card with HTML rich formatting. Unlike comments, subtasks accept HTML directly in creation.",
+      {
+        cardId: z.string().describe("A card id"),
+        content: z.string().describe("Subtask content in plain text or markdown that will be formatted as HTML"),
+        isFinished: z.number().min(0).max(1).optional().default(0).describe("Whether the subtask is finished (0 = not finished, 1 = finished)"),
+      },
+      async ({ cardId, content, isFinished = 0 }): Promise<any> => {
+        // Format content as HTML (subtasks accept HTML directly)
+        const htmlContent = formatContentToHtml(content);
+
+        // Create subtask directly with HTML formatting
+        const response = await apiServices.addCardSubtask(
+          cardId,
+          htmlContent,
+          undefined,
+          isFinished
+        );
+
+        return handleApiResponse(response);
+      }
+    );
+  }
+
+  /**
+   * Update subtask with HTML formatting.
+   * Subtasks accept HTML directly in updates, no need for create-then-update strategy.
+   */
+  private registerUpdateFormattedCardSubtaskToolhandler(): void {
+    this.server.tool(
+      "update-formatted-card-subtask",
+      "Update a subtask with HTML rich formatting. Unlike comments, subtasks accept HTML directly in updates.",
+      {
+        cardId: z.string().describe("A card id"),
+        subtaskId: z.string().describe("A subtask id"),
+        content: z.string().describe("Subtask content in plain text or markdown that will be formatted as HTML"),
+        isFinished: z.number().min(0).max(1).optional().describe("Whether the subtask is finished (0 = not finished, 1 = finished)"),
+      },
+      async ({ cardId, subtaskId, content, isFinished }): Promise<any> => {
+        // Format content as HTML
+        const htmlContent = formatContentToHtml(content);
+
+        // Update subtask with HTML formatting
+        const response = await apiServices.updateCardSubtask(
+          cardId,
+          subtaskId,
+          htmlContent,
+          isFinished
+        );
 
         return handleApiResponse(response);
       }
