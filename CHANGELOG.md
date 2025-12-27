@@ -1,56 +1,86 @@
 # Changelog
 
-## Version 1.7.0 - 2025-01-27
+All notable changes to this project will be documented in this file.
 
-Esta versão inclui melhorias e refinamentos nas funcionalidades de formatação HTML rica introduzidas na versão anterior.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-### Melhorias
+## [Unreleased]
 
-- **Integração de Prompts**:
-  - Adicionado `FormattedContentPromptsController` para fornecer prompts contextuais que guiam a criação de comentários e subtasks formatadas.
-  - Prompts incluem instruções detalhadas sobre limitações da API e melhores práticas de formatação.
+## [1.8.0] - 2025-12-27
 
-- **Refinamentos Técnicos**:
-  - Melhor tratamento de erros nas operações de formatação de comentários.
-  - Validação aprimorada de respostas da API durante o processo de criação e atualização de comentários formatados.
-  - Documentação interna melhorada sobre diferenças entre comentários e subtasks em relação ao suporte HTML.
+### Fixed
 
-### Atualização de Versão
+- **Formatted Comment Tool**:
+  - Fixed `add-formatted-card-comment` tool to accept HTML content directly instead of plain text/markdown
+  - Improved comment_id extraction from API response with fallback paths
+  - Enhanced plain text extraction from HTML for initial comment creation
+  - Tool now properly handles the two-step process (create plain text, then update with HTML) transparently
 
-- A versão do pacote foi atualizada de `1.6.0` para `1.7.0`.
+### Changed
 
-## Version 1.6.0 - 2025-01-27
+- **Internationalization**:
+  - Translated all documentation, comments, and prompts from Portuguese to English
+  - Updated README.md to English
+  - Translated all code comments and documentation strings
+  - Updated prompt texts in `FormattedContentPromptsController` to English
+  - Translated utility function documentation in `htmlFormatter.ts`
 
-Esta versão introduz suporte para formatação HTML rica em comentários e subtasks, permitindo criar conteúdo visualmente mais rico e organizado no BusinessMap.
+### Version Update
 
-### Novas Funcionalidades
+- The package version has been updated from `1.7.1-next.0` to `1.8.0`.
 
-- **Comentários Formatados**:
-  - `add-formatted-card-comment`: Nova ferramenta para adicionar comentários com formatação HTML rica, incluindo quebras de linha, estilos, emojis e elementos HTML suportados.
-  - Suporte para tags HTML: `<h3>`, `<p>`, `<strong>`, `<em>`, `<u>`, `<code>`, `<hr>`, `<ul>`, `<ol>`, `<a>`, `<blockquote>`, `<pre>` e estilos inline.
-  - Preservação automática de emojis e formatação markdown básica.
+## [1.7.0] - 2025-01-27
 
-- **Subtasks Formatadas**:
-  - `add-formatted-card-subtask`: Nova ferramenta para adicionar subtasks com formatação HTML rica.
-  - `update-formatted-card-subtask`: Nova ferramenta para atualizar subtasks existentes com formatação HTML.
-  - Diferente dos comentários, subtasks aceitam HTML diretamente na criação e atualização.
+This version includes improvements and refinements to the rich HTML formatting features introduced in the previous version.
 
-- **Prompts para Conteúdo Formatado**:
-  - `add-formatted-card-comment`: Prompt para guiar a criação de comentários formatados.
-  - `add-formatted-card-subtask`: Prompt para guiar a criação/edição de subtasks formatadas.
+### Improvements
 
-### Melhorias
+- **Prompt Integration**:
+  - Added `FormattedContentPromptsController` to provide contextual prompts that guide the creation of formatted comments and subtasks.
+  - Prompts include detailed instructions about API limitations and formatting best practices.
 
-- **Utilitário de Formatação HTML**:
-  - Novo módulo `htmlFormatter` com funções para converter texto simples/markdown em HTML formatado.
-  - Suporte para conversão de markdown básico (negrito, itálico, links, listas, etc.) para HTML.
-  - Preservação de HTML existente quando aplicável.
+- **Technical Refinements**:
+  - Better error handling in comment formatting operations.
+  - Enhanced API response validation during the formatted comment creation and update process.
+  - Improved internal documentation about differences between comments and subtasks regarding HTML support.
 
-### Atualização de Versão
+### Version Update
 
-- A versão do pacote foi atualizada de `1.5.0` para `1.6.0`.
+- The package version has been updated from `1.6.0` to `1.7.0`.
 
-## Version 1.3.0 - 2025-07-18
+## [1.6.0] - 2025-01-27
+
+This version introduces support for rich HTML formatting in comments and subtasks, allowing for creating visually richer and more organized content in BusinessMap.
+
+### New Features
+
+- **Formatted Comments**:
+  - `add-formatted-card-comment`: New tool to add comments with rich HTML formatting, including line breaks, styles, emojis, and supported HTML elements.
+  - Support for HTML tags: `<h3>`, `<p>`, `<strong>`, `<em>`, `<u>`, `<code>`, `<hr>`, `<ul>`, `<ol>`, `<a>`, `<blockquote>`, `<pre>`, and inline styles.
+  - Automatic preservation of emojis and basic markdown formatting.
+
+- **Formatted Subtasks**:
+  - `add-formatted-card-subtask`: New tool to add subtasks with rich HTML formatting.
+  - `update-formatted-card-subtask`: New tool to update existing subtasks with HTML formatting.
+  - Unlike comments, subtasks accept HTML directly in creation and update.
+
+- **Formatted Content Prompts**:
+  - `add-formatted-card-comment`: Prompt to guide the creation of formatted comments.
+  - `add-formatted-card-subtask`: Prompt to guide the creation/editing of formatted subtasks.
+
+### Improvements
+
+- **HTML Formatting Utility**:
+  - New `htmlFormatter` module with functions to convert plain text/markdown to formatted HTML.
+  - Support for converting basic markdown (bold, italic, links, lists, etc.) to HTML.
+  - Preservation of existing HTML when applicable.
+
+### Version Update
+
+- The package version has been updated from `1.5.0` to `1.6.0`.
+
+## [1.3.0] - 2025-07-18
 
 This release introduces workspace management tools, allowing for interaction with workspaces within Businessmap.
 
@@ -69,7 +99,7 @@ This release introduces workspace management tools, allowing for interaction wit
 
 - The package version has been updated from `1.2.0` to `1.3.0`.
 
-## Version 1.2.0 - 2025-07-14
+## [1.2.0] - 2025-07-14
 
 This release focuses on improving user management capabilities and refining existing tools.
 
@@ -89,7 +119,7 @@ This release focuses on improving user management capabilities and refining exis
 
 - The package version has been updated from `1.1.0` to `1.2.0`.
 
-## Version 1.1.0 - 2025-07-12
+## [1.1.0] - 2025-07-12
 
 This release introduces new functionalities for card management, a read-only mode for the server, and refactors user information retrieval.
 
@@ -115,3 +145,11 @@ This release introduces new functionalities for card management, a read-only mod
 ### Version Update
 
 - The package version has been updated from `1.0.1` to `1.1.0`.
+
+[Unreleased]: https://github.com/godrix/mcp-businessmap/compare/v1.8.0...HEAD
+[1.8.0]: https://github.com/godrix/mcp-businessmap/compare/v1.7.0...v1.8.0
+[1.7.0]: https://github.com/godrix/mcp-businessmap/compare/v1.6.0...v1.7.0
+[1.6.0]: https://github.com/godrix/mcp-businessmap/compare/v1.3.0...v1.6.0
+[1.3.0]: https://github.com/godrix/mcp-businessmap/compare/v1.2.0...v1.3.0
+[1.2.0]: https://github.com/godrix/mcp-businessmap/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/godrix/mcp-businessmap/compare/v1.0.1...v1.1.0
