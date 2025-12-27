@@ -1,69 +1,69 @@
 /**
- * Utilitário para formatar conteúdo em HTML rico
- * Suporta tags HTML e preserva emojis e quebras de linha
+ * Utility to format content into rich HTML
+ * Supports HTML tags and preserves emojis and line breaks
  */
 
 /**
- * Formata conteúdo de texto simples/markdown em HTML rico
- * Suporta as seguintes tags HTML:
- * - <h3> para títulos principais
- * - <p> para parágrafos e quebras de linha
- * - <strong> para texto em negrito
- * - <em> para texto em itálico
- * - <u> para texto sublinhado
- * - <code> para código inline
- * - <hr> para linhas horizontais separadoras
- * - <ul> e <li> para listas não ordenadas
- * - <ol> e <li> para listas ordenadas (numeradas)
- * - <a href=""> para links clicáveis
- * - <blockquote> para citações destacadas
- * - <pre> para texto pré-formatado (múltiplas linhas)
- * - <p style=""> para estilos inline (color, background-color, font-size, etc)
+ * Formats plain text/markdown content into rich HTML
+ * Supports the following HTML tags:
+ * - <h3> for main titles
+ * - <p> for paragraphs and line breaks
+ * - <strong> for bold text
+ * - <em> for italic text
+ * - <u> for underlined text
+ * - <code> for inline code
+ * - <hr> for horizontal separator lines
+ * - <ul> and <li> for unordered lists
+ * - <ol> and <li> for ordered (numbered) lists
+ * - <a href=""> for clickable links
+ * - <blockquote> for highlighted quotes
+ * - <pre> for pre-formatted text (multiple lines)
+ * - <p style=""> for inline styles (color, background-color, font-size, etc)
  * 
- * Emojis são totalmente suportados e preservados
+ * Emojis are fully supported and preserved
  * 
- * @param content - Conteúdo em texto simples ou markdown básico
- * @returns HTML formatado
+ * @param content - Content in plain text or basic markdown
+ * @returns Formatted HTML
  */
 export function formatContentToHtml(content: string): string {
   if (!content || content.trim() === '') {
     return '';
   }
 
-  // Preserva emojis e quebras de linha
-  // Converte quebras de linha duplas em parágrafos
+  // Preserves emojis and line breaks
+  // Converts double line breaks into paragraphs
   let html = content
     .split('\n\n')
     .map(paragraph => {
       const trimmed = paragraph.trim();
       if (trimmed === '') return '';
       
-      // Se já começa com tag HTML, preserva
+      // If it already starts with HTML tag, preserve it
       if (trimmed.startsWith('<')) {
         return trimmed;
       }
       
-      // Converte markdown básico para HTML
+      // Converts basic markdown to HTML
       let formatted = trimmed;
       
-      // Headers (### Título -> <h3>Título</h3>)
+      // Headers (### Title -> <h3>Title</h3>)
       formatted = formatted.replace(/^###\s+(.+)$/gm, '<h3>$1</h3>');
       
-      // Bold (**texto** ou __texto__ -> <strong>texto</strong>)
+      // Bold (**text** or __text__ -> <strong>text</strong>)
       formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
       formatted = formatted.replace(/__(.+?)__/g, '<strong>$1</strong>');
       
-      // Italic (*texto* ou _texto_ -> <em>texto</em>)
+      // Italic (*text* or _text_ -> <em>text</em>)
       formatted = formatted.replace(/\*(.+?)\*/g, '<em>$1</em>');
       formatted = formatted.replace(/_(.+?)_/g, '<em>$1</em>');
       
-      // Links ([texto](url) -> <a href="url">texto</a>)
+      // Links ([text](url) -> <a href="url">text</a>)
       formatted = formatted.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
       
-      // Code inline (`código` -> <code>código</code>)
+      // Code inline (`code` -> <code>code</code>)
       formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
       
-      // Listas não ordenadas (- item ou * item)
+      // Unordered lists (- item or * item)
       if (formatted.match(/^[-*]\s+/m)) {
         const items = formatted.split('\n')
           .filter(line => line.trim().match(/^[-*]\s+/))
@@ -73,7 +73,7 @@ export function formatContentToHtml(content: string): string {
         formatted = `<ul>${items}</ul>`;
       }
       
-      // Listas ordenadas (1. item)
+      // Ordered lists (1. item)
       if (formatted.match(/^\d+\.\s+/m)) {
         const items = formatted.split('\n')
           .filter(line => line.trim().match(/^\d+\.\s+/))
@@ -83,7 +83,7 @@ export function formatContentToHtml(content: string): string {
         formatted = `<ol>${items}</ol>`;
       }
       
-      // Se não for uma tag HTML específica, envolve em parágrafo
+      // If it's not a specific HTML tag, wrap in paragraph
       if (!formatted.match(/^<(h3|ul|ol|hr|blockquote|pre)/)) {
         formatted = `<p>${formatted}</p>`;
       }
@@ -93,28 +93,27 @@ export function formatContentToHtml(content: string): string {
     .filter(p => p !== '')
     .join('\n');
 
-  // Converte quebras de linha simples em <br>
+  // Converts single line breaks to <br>
   html = html.replace(/\n(?!<)/g, '<br>');
 
   return html;
 }
 
 /**
- * Formata conteúdo preservando HTML existente e adicionando formatação quando necessário
- * Útil quando o conteúdo já contém algumas tags HTML
+ * Formats content preserving existing HTML and adding formatting when necessary
+ * Useful when content already contains some HTML tags
  */
 export function formatContentToHtmlPreservingExisting(content: string): string {
   if (!content || content.trim() === '') {
     return '';
   }
 
-  // Se já é HTML válido, retorna como está (após sanitização básica)
+  // If it's already valid HTML, return as is (after basic sanitization)
   if (content.includes('<') && content.includes('>')) {
-    // Preserva HTML existente, apenas garante que está bem formatado
+    // Preserves existing HTML, just ensures it's well formatted
     return content;
   }
 
-  // Caso contrário, formata do zero
+  // Otherwise, format from scratch
   return formatContentToHtml(content);
 }
-

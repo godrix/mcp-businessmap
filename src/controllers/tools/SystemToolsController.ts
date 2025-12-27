@@ -6,6 +6,6 @@ export class SystemToolsController {
   }
 
   private registerTools(): void {
-    // Sistema de ferramentas - atualmente vazio após remoção do get-mcp-version
+    // System tools - currently empty after removal of get-mcp-version
   }
 }

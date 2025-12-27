@@ -1,50 +1,50 @@
 # MCP Businessmap
 
-Este projeto é um servidor MCP (Model Context Protocol) não oficial para [Businessmap](https://businessmap.io) (anteriormente Kanbanize), projetado para expor um conjunto de ferramentas para gerenciar entidades relacionadas a negócios, como quadros, cartões, colunas e informações de usuários. Foi construído para facilitar a interação com Modelos de Linguagem Grande (LLMs) e aplicações similares através de um protocolo padronizado.
+This project is an unofficial MCP (Model Context Protocol) server for [Businessmap](https://businessmap.io) (formerly Kanbanize), designed to expose a set of tools for managing business-related entities such as boards, cards, columns, and user information. It was built to facilitate interaction with Large Language Models (LLMs) and similar applications through a standardized protocol.
 
-## Ferramentas Disponíveis
+## Available Tools
 
-O servidor fornece as seguintes ferramentas, acessíveis via MCP:
+The server provides the following tools, accessible via MCP:
 
-- **Ferramentas de Limites da API**: Gerenciar e monitorar limites de uso da API.
-- **Ferramentas de Quadros**: Interagir e gerenciar quadros de negócios.
-- **Ferramentas de Comentários de Cartões**: Gerenciar comentários associados aos cartões.
-- **Ferramentas de Co-proprietários de Cartões**: Lidar com atribuições de co-propriedade para cartões.
-- **Ferramentas de Cartões Vinculados**: Gerenciar relacionamentos entre cartões vinculados.
-- **Ferramentas de Subtarefas de Cartões**: Gerenciar subtarefas dentro dos cartões.
-- **Ferramentas de Cartões**: Ferramentas gerais para gerenciar e interagir com cartões.
-- **Ferramentas de Colunas**: Interagir e gerenciar colunas dentro dos quadros.
-- **Ferramentas de Raias**: Interagir e gerenciar raias dentro dos quadros.
-- **Ferramentas de Sistema**: Monitorar saúde do servidor, informações de versão e configuração do ambiente.
-- **Ferramentas de Usuários**: Interagir e gerenciar usuários.
-- **Ferramentas de Espaços de Trabalho**: Interagir e gerenciar espaços de trabalho.
+- **API Limits Tools**: Manage and monitor API usage limits.
+- **Board Tools**: Interact and manage business boards.
+- **Card Comments Tools**: Manage comments associated with cards.
+- **Card Co-Owners Tools**: Handle co-ownership assignments for cards.
+- **Linked Cards Tools**: Manage relationships between linked cards.
+- **Card Subtasks Tools**: Manage subtasks within cards.
+- **Card Tools**: General tools for managing and interacting with cards.
+- **Column Tools**: Interact and manage columns within boards.
+- **Lane Tools**: Interact and manage lanes within boards.
+- **System Tools**: Monitor server health, version information, and environment configuration.
+- **User Tools**: Interact and manage users.
+- **Workspace Tools**: Interact and manage workspaces.
 
-## Recursos Disponíveis
+## Available Resources
 
-O servidor fornece os seguintes recursos, acessíveis via MCP:
+The server provides the following resources, accessible via MCP:
 
-- **Informações do Usuário**: Recuperar dados sobre o usuário ativo (`user://me`).
+- **User Information**: Retrieve data about the active user (`user://me`).
 
-## Começando
+## Getting Started
 
-Para usar este servidor MCP com seu LLM, siga estes passos:
+To use this MCP server with your LLM, follow these steps:
 
-### 1. Configurar Node.js e NPM
+### 1. Set Up Node.js and NPM
 
-Primeiro, certifique-se de ter o Node.js (que inclui npm) instalado em seu sistema. Você pode baixá-lo em [nodejs.org](https://nodejs.org/).
+First, make sure you have Node.js (which includes npm) installed on your system. You can download it from [nodejs.org](https://nodejs.org/).
 
-### 2. Conectar ao seu LLM
+### 2. Connect to Your LLM
 
-## Instalação Rápida no Cursor
+## Quick Installation in Cursor
 
-[![Adicionar ao Cursor](https://img.shields.io/badge/Adicionar%20ao-Cursor-blue?style=for-the-badge&logo=cursor)](https://cursor.sh/settings/mcp)
+[![Add to Cursor](https://img.shields.io/badge/Add%20to-Cursor-blue?style=for-the-badge&logo=cursor)](https://cursor.sh/settings/mcp)
 
-### Configuração Rápida para Cursor
+### Quick Setup for Cursor
 
 [![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=businessmap&config=eyJjb21tYW5kIjoibnB4IC15IGJ1c2luZXNzbWFwLW1jcCJ9)
 
-1. **Abra o Cursor** e vá para `Configurações > Recursos > MCP`
-2. **Adicione um novo servidor** com as seguintes configurações:
+1. **Open Cursor** and go to `Settings > Features > MCP`
+2. **Add a new server** with the following configuration:
 
 ```json
 {
@@ -58,19 +58,19 @@ Primeiro, certifique-se de ter o Node.js (que inclui npm) instalado em seu siste
 }
 ```
 
-3. **Salve** e **reinicie** o Cursor
-4. **Comece a usar** as ferramentas do Businessmap diretamente no chat!
+3. **Save** and **restart** Cursor
+4. **Start using** Businessmap tools directly in the chat!
 
-### Instalação via NPM
+### Installation via NPM
 
 ```bash
 npm install -g businessmap-mcp
 ```
 
 
-Para conectar este servidor MCP ao seu LLM, você precisa configurá-lo em seu arquivo `mcp.json`. Este arquivo informa ao ambiente do seu LLM como descobrir e interagir com o servidor MCP.
+To connect this MCP server to your LLM, you need to configure it in your `mcp.json` file. This file tells your LLM environment how to discover and interact with the MCP server.
 
-Adicione a seguinte configuração ao seu arquivo `mcp.json`:
+Add the following configuration to your `mcp.json` file:
 
 ```json
 {
@@ -80,60 +80,60 @@ Adicione a seguinte configuração ao seu arquivo `mcp.json`:
       "command": "npx",
       "args": ["businessmap-mcp", "-y"],
       "envs": {
-        "BUSINESSMAP_API_URL": "https://exemplo.kanbanize.com/api/v2",
-        "BUSINESSMAP_API_KEY": "sua_chave_api_businessmap"
-        // "BUSINESSMAP_READ_ONLY": "true" opcional, valor padrão é false
-        // "BUSINESSMAP_DEFAULT_WORKSPACE_ID": "123" opcional - Define o ID do workspace do BusinessMap
+        "BUSINESSMAP_API_URL": "https://example.kanbanize.com/api/v2",
+        "BUSINESSMAP_API_KEY": "your_businessmap_api_key"
+        // "BUSINESSMAP_READ_ONLY": "true" optional, default value is false
+        // "BUSINESSMAP_DEFAULT_WORKSPACE_ID": "123" optional - Sets the BusinessMap workspace ID
       }
     }
   ]
 }
 ```
 
-### Variáveis de Ambiente
+### Environment Variables
 
 #### `BUSINESSMAP_READ_ONLY`
 
-- **Propósito**: Esta variável de ambiente opcional controla se o servidor opera apenas em modo de leitura.
-- **Valor padrão**: `false` (operações de alteração são habilitadas por padrão).
-- **Comportamento**: Se definida como `true`, todas as ferramentas que executam operações de alteração (como criar, atualizar e excluir cartões, comentários, co-proprietários e subtarefas) serão desabilitadas. Isso garante que o servidor apenas recupere dados e não modifique nenhuma entidade no BusinessMap.
+- **Purpose**: This optional environment variable controls whether the server operates in read-only mode.
+- **Default value**: `false` (mutation operations are enabled by default).
+- **Behavior**: If set to `true`, all tools that perform mutation operations (such as creating, updating, and deleting cards, comments, co-owners, and subtasks) will be disabled. This ensures that the server only retrieves data and does not modify any entities in BusinessMap.
 
 #### `BUSINESSMAP_DEFAULT_WORKSPACE_ID`
 
-- **Propósito**: Esta variável de ambiente opcional define o ID padrão do workspace do BusinessMap a ser usado pelo servidor.
-- **Valor padrão**: `undefined` (nenhum ID de workspace padrão).
-- **Comportamento**: Quando definida, este ID de workspace será usado como workspace padrão para operações que requerem um contexto de workspace. Isso pode ajudar a simplificar operações evitando a necessidade de especificar o ID do workspace repetidamente.
+- **Purpose**: This optional environment variable sets the default BusinessMap workspace ID to be used by the server.
+- **Default value**: `undefined` (no default workspace ID).
+- **Behavior**: When set, this workspace ID will be used as the default workspace for operations that require a workspace context. This can help simplify operations by avoiding the need to specify the workspace ID repeatedly.
 
 
-**Nota:**
+**Note:**
 
-- Substitua `"https://exemplo.kanbanize.com/api/v2"` pela URL base real da API à qual seu servidor `businessmap-mcp` precisa se conectar.
-- Substitua `"sua_chave_api_businessmap"` pela sua chave de API real.
-- O `command` e `args` especificam como executar o servidor MCP.
-- A seção `envs` fornece as variáveis de ambiente necessárias para a operação do servidor `businessmap-mcp`.
+- Replace `"https://example.kanbanize.com/api/v2"` with the actual base API URL that your `businessmap-mcp` server needs to connect to.
+- Replace `"your_businessmap_api_key"` with your actual API key.
+- The `command` and `args` specify how to run the MCP server.
+- The `envs` section provides the environment variables necessary for the `businessmap-mcp` server operation.
 
-Após configurar o `mcp.json`, seu LLM deve ser capaz de descobrir e chamar as ferramentas expostas por este servidor (ex: `Ferramentas de Quadros`, `Ferramentas de Cartões`). Consulte a documentação do seu LLM para instruções específicas sobre como carregar configurações `mcp.json`.
+After configuring `mcp.json`, your LLM should be able to discover and call the tools exposed by this server (e.g., `Board Tools`, `Card Tools`). Consult your LLM's documentation for specific instructions on how to load `mcp.json` configurations.
 
-## Suporte e Contribuição
+## Support and Contribution
 
-Se você achar este projeto útil, considere dar uma estrela ⭐ no GitHub!
+If you find this project useful, consider giving it a star ⭐ on GitHub!
 
-### Reportar Problemas
+### Reporting Issues
 
-Se você encontrar bugs ou tiver solicitações de recursos, abra uma issue na [página de Issues do GitHub](https://github.com/godrix/mcp-businessmap/issues).
+If you encounter bugs or have feature requests, open an issue on the [GitHub Issues page](https://github.com/godrix/mcp-businessmap/issues).
 
-### Contribuindo
+### Contributing
 
-Contribuições são bem-vindas! Se você gostaria de contribuir, siga estes passos:
+Contributions are welcome! If you would like to contribute, follow these steps:
 
-1.  Faça um fork do repositório.
-2.  Crie uma nova branch (`git checkout -b feature/nome-da-sua-feature`).
-3.  Faça suas alterações e commit (`git commit -m 'Adicionar nova feature'`).
-4.  Faça push para sua branch (`git push origin feature/nome-da-sua-feature`).
-5.  Abra um Pull Request.
+1.  Fork the repository.
+2.  Create a new branch (`git checkout -b feature/your-feature-name`).
+3.  Make your changes and commit (`git commit -m 'Add new feature'`).
+4.  Push to your branch (`git push origin feature/your-feature-name`).
+5.  Open a Pull Request.
 
-Certifique-se de que seu código segue os padrões de codificação do projeto e inclui testes apropriados.
+Make sure your code follows the project's coding standards and includes appropriate tests.
 
-### Mais Informações
+### More Information
 
-Para mais informações sobre o Businessmap Kanbanize, visite o site oficial: [https://businessmap.io](https://businessmap.io)
+For more information about Businessmap Kanbanize, visit the official website: [https://businessmap.io](https://businessmap.io)

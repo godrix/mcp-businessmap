@@ -105,8 +105,8 @@ export class CardSubtasksToolsController {
   }
 
   /**
-   * Diferente dos comentários, as subtasks aceitam HTML diretamente na criação e atualização.
-   * Não é necessário criar primeiro e atualizar depois - pode criar diretamente com HTML formatado.
+   * Unlike comments, subtasks accept HTML directly in creation and update.
+   * No need to create first and update later - can create directly with formatted HTML.
    */
   private registerAddFormattedCardSubtaskToolhandler(): void {
     this.server.tool(

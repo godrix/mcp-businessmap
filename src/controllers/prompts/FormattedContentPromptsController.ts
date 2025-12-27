@@ -17,65 +17,56 @@ export class FormattedContentPromptsController {
       "Add a formatted comment to a BusinessMap card with HTML rich formatting, line breaks, styling, and emojis",
       {
         cardId: z.string().describe("The card ID where the comment will be added"),
-        content: z.string().describe("The comment content in plain text or markdown that will be formatted as HTML"),
+        htmlContent: z.string().describe("The comment content in HTML format (e.g., <h3>Title</h3><p>Paragraph</p>)"),
       },
-      async ({ cardId, content }) => {
-        const promptText = `# Adicionar Comentário Formatado no BusinessMap
+      async ({ cardId, htmlContent }) => {
+        const promptText = `# Add Formatted Comment to BusinessMap
 
 ## Overview
 
-Comando para adicionar comentários formatados com quebras de linha, estilização e emojis em cards do BusinessMap.
+Command to add formatted comments with line breaks, styling, and emojis to BusinessMap cards.
 
-## IMPORTANTE - Limitação da API
+## IMPORTANT - How It Works
 
-A API de criação de comentários (\`addCardComment\`) aceita apenas texto simples (type: plain), não aceita HTML. A API de atualização (\`updateCardComment\`) aceita HTML completo com estilos inline. 
+The \`mcp_businessmap_add-formatted-card-comment\` tool accepts **HTML directly** as input. Internally, it:
+1. Extracts plain text from HTML to create the comment (API limitation)
+2. Waits for the returned \`comment_id\`
+3. Immediately updates with the provided HTML
 
-**Por isso, a estratégia consiste em criar o comentário primeiro com texto simples e imediatamente atualizá-lo com formatação HTML rica.**
+**For the user, it appears as a single HTML creation operation.**
 
-## Steps
+## How to Use
 
-1. Receber do usuário o cardId e o conteúdo do comentário a ser adicionado
-2. Criar o comentário inicial usando a ferramenta \`mcp_businessmap_add-card-comment\` com texto simples
-3. Capturar o \`comment_id\` retornado pela API na resposta da criação
-4. Formatar o conteúdo do comentário em HTML usando as tags suportadas:
-   - \`<h3>\` para títulos principais (pode combinar com emojis)
-   - \`<p>\` para parágrafos e quebras de linha
-   - \`<strong>\` para texto em negrito
-   - \`<em>\` para texto em itálico
-   - \`<u>\` para texto sublinhado
-   - \`<code>\` para código inline
-   - \`<hr>\` para linhas horizontais separadoras
-   - \`<ul>\` e \`<li>\` para listas não ordenadas
-   - \`<ol>\` e \`<li>\` para listas ordenadas (numeradas)
-   - \`<a href="">\` para links clicáveis
-   - \`<blockquote>\` para citações destacadas
-   - \`<pre>\` para texto pré-formatado (múltiplas linhas)
-   - \`<p style="">\` para estilos inline (color, background-color, font-size, etc)
-   - Emojis são totalmente suportados: 🚀 ⚠️ 💡 ✨ 🔥 👍 ❌ ⭐ 📋 ✏️ 📌 💻 🎯 🔗 🎨 ✅ 📝
-5. Atualizar o comentário recém-criado usando a ferramenta \`mcp_businessmap_update-card-comment\` passando o cardId, commentId e o conteúdo HTML formatado
-6. Usar emojis estrategicamente para melhorar a legibilidade e destacar informações importantes
-7. Confirmar ao usuário que o comentário foi adicionado com formatação e informar o comment_id gerado
+**Simply use the \`mcp_businessmap_add-formatted-card-comment\` tool with:**
+- \`cardId\`: Card ID
+- \`htmlContent\`: Formatted HTML content
 
-## Checklist de Verificação
+The tool performs the entire two-step process internally, transparently.
 
-- [ ] O cardId fornecido é um número válido
-- [ ] O comentário foi criado com sucesso e o comment_id foi capturado
-- [ ] O HTML está bem formatado com tags válidas e suportadas
-- [ ] O comentário foi atualizado imediatamente após a criação
-- [ ] Todas as informações importantes estão organizadas em parágrafos separados
-- [ ] Títulos usam tag h3 e emojis apropriados para destaque
-- [ ] Seções importantes são separadas com hr (linha horizontal)
-- [ ] Listas são usadas quando apropriado para organizar múltiplos itens
-- [ ] Emojis são usados estrategicamente para melhorar a visualização
-- [ ] Estilos inline são usados quando necessário destacar informações críticas
-- [ ] A resposta final confirma o sucesso e apresenta o comment_id
+## Supported HTML Tags
 
-## Parâmetros fornecidos
+- \`<h3>\` for main titles (can combine with emojis)
+- \`<p>\` for paragraphs and line breaks
+- \`<strong>\` for bold text
+- \`<em>\` for italic text
+- \`<u>\` for underlined text
+- \`<code>\` for inline code
+- \`<hr>\` for horizontal separator lines
+- \`<ul>\` and \`<li>\` for unordered lists
+- \`<ol>\` and \`<li>\` for ordered (numbered) lists
+- \`<a href="">\` for clickable links
+- \`<blockquote>\` for highlighted quotes
+- \`<pre>\` for pre-formatted text (multiple lines)
+- \`<p style="">\` for inline styles (color, background-color, font-size, etc)
+- Emojis are fully supported: 🚀 ⚠️ 💡 ✨ 🔥 👍 ❌ ⭐ 📋 ✏️ 📌 💻 🎯 🔗 🎨 ✅ 📝
 
+## Usage Example
+
+Use the \`mcp_businessmap_add-formatted-card-comment\` tool with:
 - cardId: ${cardId}
-- content: ${content}
+- htmlContent: ${htmlContent}
 
-Use as ferramentas MCP disponíveis para criar e atualizar o comentário formatado.`;
+The tool will return the \`comment_id\` of the created and formatted comment.`;
 
         return {
           messages: [
@@ -105,70 +96,70 @@ Use as ferramentas MCP disponíveis para criar e atualizar o comentário formata
       async ({ cardId, subtaskId, content, isFinished }) => {
         const isUpdate = !!subtaskId;
         const isFinishedNum = isFinished ? parseInt(isFinished, 10) : undefined;
-        const promptText = `# Adicionar/Editar Subtask Formatada no BusinessMap
+        const promptText = `# Add/Edit Formatted Subtask in BusinessMap
 
 ## Overview
 
-Comando para adicionar ou editar subtasks formatadas com quebras de linha, estilização e emojis em cards do BusinessMap.
+Command to add or edit formatted subtasks with line breaks, styling, and emojis to BusinessMap cards.
 
-## IMPORTANTE - Diferença em relação aos Comentários
+## IMPORTANT - Difference from Comments
 
-Diferente dos comentários, as subtasks **já aceitam HTML diretamente** tanto na criação quanto na atualização, não sendo necessário criar primeiro e atualizar depois.
+Unlike comments, subtasks **already accept HTML directly** in both creation and update, so there's no need to create first and then update.
 
-**Vantagens das Subtasks:**
-- ✅ **Subtasks aceitam HTML diretamente** na criação (não precisa criar texto simples e depois atualizar)
-- ✅ **Menos complexo**: um único passo para criar ou atualizar
-- ✅ Mesmas tags HTML e emojis suportados
+**Subtask Advantages:**
+- ✅ **Subtasks accept HTML directly** in creation (no need to create plain text and then update)
+- ✅ **Less complex**: single step to create or update
+- ✅ Same HTML tags and emojis supported
 
 ## Steps
 
-${isUpdate ? `1. Receber do usuário o cardId, subtaskId e o conteúdo da subtask a ser atualizada` : `1. Receber do usuário o cardId e o conteúdo da subtask a ser adicionada`}
-2. Receber ou formatar o conteúdo da subtask
-3. Formatar o conteúdo em HTML usando as tags suportadas:
-   - \`<h3>\` para títulos principais (pode combinar com emojis)
-   - \`<p>\` para parágrafos e quebras de linha
-   - \`<strong>\` para texto em negrito
-   - \`<em>\` para texto em itálico
-   - \`<u>\` para texto sublinhado
-   - \`<code>\` para código inline
-   - \`<hr>\` para linhas horizontais separadoras
-   - \`<ul>\` e \`<li>\` para listas não ordenadas
-   - \`<ol>\` e \`<li>\` para listas ordenadas (numeradas)
-   - \`<a href="">\` para links clicáveis
-   - \`<blockquote>\` para citações destacadas
-   - \`<pre>\` para texto pré-formatado (múltiplas linhas)
-   - \`<p style="">\` para estilos inline (color, background-color, font-size, etc)
-   - Emojis são totalmente suportados: 🚀 ⚠️ 💡 ✨ 🔥 👍 ❌ ⭐ 📋 ✏️ 📌 💻 🎯 🔗 🎨 ✅ 📝
-${isUpdate ? `4. Para **atualizar** uma subtask existente:
-   - Usar \`mcp_businessmap_update-card-subtask\` com description formatada em HTML
-   - Informar cardId, subtaskId, description e isFinished (0 ou 1)` : `4. Para **criar** uma nova subtask:
-   - Usar \`mcp_businessmap_add-card-subtask\` com description formatada em HTML
-   - Informar cardId e description`}
-5. Usar emojis estrategicamente para melhorar a legibilidade e destacar informações importantes
-6. Confirmar ao usuário que a subtask foi criada/atualizada com formatação
+${isUpdate ? `1. Receive from user the cardId, subtaskId and the subtask content to be updated` : `1. Receive from user the cardId and the subtask content to be added`}
+2. Receive or format the subtask content
+3. Format the content in HTML using supported tags:
+   - \`<h3>\` for main titles (can combine with emojis)
+   - \`<p>\` for paragraphs and line breaks
+   - \`<strong>\` for bold text
+   - \`<em>\` for italic text
+   - \`<u>\` for underlined text
+   - \`<code>\` for inline code
+   - \`<hr>\` for horizontal separator lines
+   - \`<ul>\` and \`<li>\` for unordered lists
+   - \`<ol>\` and \`<li>\` for ordered (numbered) lists
+   - \`<a href="">\` for clickable links
+   - \`<blockquote>\` for highlighted quotes
+   - \`<pre>\` for pre-formatted text (multiple lines)
+   - \`<p style="">\` for inline styles (color, background-color, font-size, etc)
+   - Emojis are fully supported: 🚀 ⚠️ 💡 ✨ 🔥 👍 ❌ ⭐ 📋 ✏️ 📌 💻 🎯 🔗 🎨 ✅ 📝
+${isUpdate ? `4. To **update** an existing subtask:
+   - Use \`mcp_businessmap_update-card-subtask\` with HTML formatted description
+   - Provide cardId, subtaskId, description and isFinished (0 or 1)` : `4. To **create** a new subtask:
+   - Use \`mcp_businessmap_add-card-subtask\` with HTML formatted description
+   - Provide cardId and description`}
+5. Use emojis strategically to improve readability and highlight important information
+6. Confirm to user that the subtask was created/updated with formatting
 
-## Checklist de Verificação
+## Verification Checklist
 
-- [ ] O cardId fornecido é um número válido
-- [ ] ${isUpdate ? "O subtaskId foi informado e é válido" : "A subtask será criada como nova"}
-- [ ] O HTML está bem formatado com tags válidas e suportadas
-- [ ] Todas as informações importantes estão organizadas em parágrafos separados
-- [ ] Títulos usam tag h3 e emojis apropriados para destaque
-- [ ] Seções importantes são separadas com hr (linha horizontal)
-- [ ] Listas são usadas quando apropriado para organizar múltiplos itens
-- [ ] Emojis são usados estrategicamente para melhorar a visualização
-- [ ] Estilos inline são usados quando necessário destacar informações críticas
-- [ ] A resposta final confirma o sucesso e apresenta o subtask_id
-- [ ] O parâmetro isFinished foi definido corretamente (0 = não concluída, 1 = concluída)
+- [ ] The provided cardId is a valid number
+- [ ] ${isUpdate ? "The subtaskId was provided and is valid" : "The subtask will be created as new"}
+- [ ] The HTML is well formatted with valid and supported tags
+- [ ] All important information is organized in separate paragraphs
+- [ ] Titles use h3 tag and appropriate emojis for highlighting
+- [ ] Important sections are separated with hr (horizontal line)
+- [ ] Lists are used when appropriate to organize multiple items
+- [ ] Emojis are used strategically to improve visualization
+- [ ] Inline styles are used when necessary to highlight critical information
+- [ ] The final response confirms success and presents the subtask_id
+- [ ] The isFinished parameter was set correctly (0 = not finished, 1 = finished)
 
-## Parâmetros fornecidos
+## Provided Parameters
 
 - cardId: ${cardId}
 ${isUpdate ? `- subtaskId: ${subtaskId}` : ""}
 - content: ${content}
 ${isFinishedNum !== undefined ? `- isFinished: ${isFinishedNum}` : ""}
 
-Use as ferramentas MCP disponíveis para ${isUpdate ? "atualizar" : "criar"} a subtask formatada.`;
+Use the available MCP tools to ${isUpdate ? "update" : "create"} the formatted subtask.`;
 
         return {
           messages: [
