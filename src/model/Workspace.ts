@@ -1,9 +1,13 @@
-
-export interface Workspace {
-  data: Datum;
+export interface Workspaces {
+  data: WorkspaceDatum[];
 }
 
-interface Datum {
+export interface Workspace {
+  data: WorkspaceDatum;
+}
+
+export interface WorkspaceDatum {
+  workspace_id?: number;
   type: number;
   is_archived: number;
   name: string;

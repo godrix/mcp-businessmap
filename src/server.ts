@@ -7,6 +7,7 @@ import {
   CardCommentsToolsController,
   CardCoOwnersToolsController,
   CardLinkedCardsToolsController,
+  CardBlockReasonToolsController,
   CardSubtasksToolsController,
   BoardToolsController,
   ColumnToolsController,
@@ -15,15 +16,15 @@ import {
   WorkspacesToolsController,
   SystemToolsController
 } from "./controllers/tools";
-import { MeResourcesController } from "./controllers/resources";
-import { FormattedContentPromptsController } from "./controllers/prompts";
+import { MeResourcesController, ContextResourcesController } from "./controllers/resources";
+import { FormattedContentPromptsController, WorkflowPromptsController } from "./controllers/prompts";
 import "dotenv/config";
 import { env } from "./utils/env";
 async function main() {
   // Server MCP
   const server = new McpServer({
     name: "mcp-businessmap",
-    version: "1.5.0",
+    version: "1.9.0",
   });
 
   // Tools
@@ -32,6 +33,7 @@ async function main() {
   new CardCommentsToolsController(server);
   new CardCoOwnersToolsController(server);
   new CardLinkedCardsToolsController(server);
+  new CardBlockReasonToolsController(server);
   new CardSubtasksToolsController(server);
   new BoardToolsController(server);
   new ColumnToolsController(server);
@@ -42,9 +44,11 @@ async function main() {
 
   // Resources
   new MeResourcesController(server);
+  new ContextResourcesController(server);
 
   // Prompts
   new FormattedContentPromptsController(server);
+  new WorkflowPromptsController(server);
 
   const transport = new StdioServerTransport();
   await server.connect(transport);

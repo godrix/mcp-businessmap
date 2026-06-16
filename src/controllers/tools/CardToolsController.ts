@@ -16,6 +16,9 @@ export class CardToolsController {
       this.registerCreateCardToolhandler();
       this.registerUpdateCardToolhandler();
       this.registerDeleteCardToolhandler();
+      this.registerCreateCardsManyToolhandler();
+      this.registerUpdateCardsManyToolhandler();
+      this.registerDeleteCardsManyToolhandler();
     }
   }
 
@@ -180,6 +183,92 @@ export class CardToolsController {
       async ({ card_id }): Promise<any> => {
         const response = await apiServices.deleteCard(card_id);
 
+        return handleApiResponse(response);
+      }
+    );
+  }
+
+  private registerCreateCardsManyToolhandler(): void {
+    this.server.tool(
+      "create-cards-many",
+      "Create multiple cards in a single request",
+      {
+        cards_json: z
+          .string()
+          .describe(
+            "JSON array of card objects per API CardCreateRequest schema (column_id, lane_id, title, etc.)"
+          ),
+        exceeding_reason: z
+          .string()
+          .optional()
+          .describe("Reason if exceeding limits"),
+        reporter_user_id: z
+          .number()
+          .optional()
+          .describe("Reporter user ID when creating on behalf of someone else"),
+      },
+      async ({ cards_json, exceeding_reason, reporter_user_id }): Promise<any> => {
+        const cards = JSON.parse(cards_json) as Record<string, unknown>[];
+        const response = await apiServices.createCardsMany(cards, {
+          exceeding_reason,
+          reporter_user_id,
+        });
+        return handleApiResponse(response);
+      }
+    );
+  }
+
+  private registerUpdateCardsManyToolhandler(): void {
+    this.server.tool(
+      "update-cards-many",
+      "Update multiple cards in a single request",
+      {
+        cards_json: z
+          .string()
+          .describe(
+            "JSON array of card objects per API CardUpdateWithCardIdRequest schema (each must include card_id)"
+          ),
+        exceeding_reason: z
+          .string()
+          .optional()
+          .describe("Reason if exceeding limits"),
+        reporter_user_id: z
+          .number()
+          .optional()
+          .describe("Reporter user ID when updating on behalf of someone else"),
+      },
+      async ({ cards_json, exceeding_reason, reporter_user_id }): Promise<any> => {
+        const cards = JSON.parse(cards_json) as Record<string, unknown>[];
+        const response = await apiServices.updateCardsMany(cards, {
+          exceeding_reason,
+          reporter_user_id,
+        });
+        return handleApiResponse(response);
+      }
+    );
+  }
+
+  private registerDeleteCardsManyToolhandler(): void {
+    this.server.tool(
+      "delete-cards-many",
+      "Delete multiple cards in a single request",
+      {
+        card_ids: z
+          .string()
+          .describe("Comma-separated list of card IDs to delete"),
+        exceeding_reason: z
+          .string()
+          .optional()
+          .describe("Reason if exceeding limits"),
+      },
+      async ({ card_ids, exceeding_reason }): Promise<any> => {
+        const ids = card_ids
+          .split(",")
+          .map((id) => parseInt(id.trim(), 10))
+          .filter((id) => !Number.isNaN(id));
+        const response = await apiServices.deleteCardsMany(ids, {
+          exceeding_reason,
+        });
         return handleApiResponse(response);
       }
     );

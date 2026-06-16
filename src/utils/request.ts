@@ -53,8 +53,8 @@ class Request {
   public patch<T>(path: string, data: any, headers?: HeadersInit): Promise<T> {
     return this.request<T>("PATCH", path, data, headers);
   }
-  public put<T>(path: string, headers?: HeadersInit): Promise<T> {
-    return this.request<T>("PUT", path, undefined, headers);
+  public put<T>(path: string, data?: any, headers?: HeadersInit): Promise<T> {
+    return this.request<T>("PUT", path, data, headers);
   }
 
   public delete<T>(path: string, headers?: HeadersInit): Promise<T> {

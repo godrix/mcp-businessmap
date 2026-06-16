@@ -3,6 +3,7 @@ export * from "./CardToolsController";
 export * from "./CardCommentsToolsController";
 export * from "./CardCoOwnersToolsController";
 export * from "./CardLinkedCardsToolsController";
+export * from "./CardBlockReasonToolsController";
 export * from "./CardSubtasksToolsController";
 export * from "./BoardToolsController";
 export * from "./ColumnToolsController";

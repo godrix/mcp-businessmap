@@ -16,7 +16,11 @@ import {
   Lanes,
   Lane,
   CreateLaneParams,
-  Workspace
+  Workspace,
+  Workspaces,
+  BoardStructure,
+  BlockReasons,
+  CardBlockReason,
 } from "../model";
 import Request from "../utils/request";
 
@@ -488,9 +492,375 @@ class ApiServices extends Request {
   }> {
     try {
       const data = await this.get<Workspace>(
-        `/workspace/${workspaceId}`
+        `/workspaces/${workspaceId}`
       );
       return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async getWorkspaces(props?: {
+    is_archived?: number;
+    if_assigned_to_boards?: number;
+  }): Promise<{
+    data?: Workspaces;
+    error?: Error;
+  }> {
+    try {
+      const params = new URLSearchParams();
+      if (props?.is_archived !== undefined) {
+        params.append("is_archived", props.is_archived.toString());
+      }
+      if (props?.if_assigned_to_boards !== undefined) {
+        params.append("if_assigned_to_boards", props.if_assigned_to_boards.toString());
+      }
+      const query = params.toString();
+      const data = await this.get<Workspaces>(
+        query ? `/workspaces?${query}` : "/workspaces"
+      );
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async createWorkspace(name: string, type?: number): Promise<{
+    data?: Workspace;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.post<Workspace>("/workspaces", {
+        name,
+        ...(type !== undefined && { type }),
+      });
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async updateWorkspace(
+    workspaceId: string,
+    updates: { name?: string; is_archived?: number }
+  ): Promise<{
+    data?: Workspace;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.patch<Workspace>(
+        `/workspaces/${workspaceId}`,
+        updates
+      );
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async getBoardStructure(boardId: string): Promise<{
+    data?: BoardStructure;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.get<BoardStructure>(
+        `/boards/${boardId}/currentStructure`
+      );
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async createColumn(
+    boardId: string,
+    params: {
+      position: number;
+      name: string;
+      workflow_id?: number;
+      section?: number;
+      parent_column_id?: number;
+      description?: string;
+      color?: string;
+      limit?: number;
+    }
+  ): Promise<{
+    data?: Column;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.post<Column>(
+        `/boards/${boardId}/columns`,
+        params
+      );
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async updateColumn(
+    boardId: string,
+    columnId: string,
+    params: {
+      position?: number;
+      name?: string;
+      section?: number;
+      parent_column_id?: number;
+      description?: string;
+      color?: string;
+      limit?: number;
+    }
+  ): Promise<{
+    data?: Column;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.patch<Column>(
+        `/boards/${boardId}/columns/${columnId}`,
+        params
+      );
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async deleteColumn(
+    boardId: string,
+    columnId: string,
+    options?: {
+      move_cards_to_column_id?: number;
+      move_metrics_to_column_id?: number;
+    }
+  ): Promise<{
+    data?: string;
+    error?: Error;
+  }> {
+    try {
+      const params = new URLSearchParams();
+      if (options?.move_cards_to_column_id !== undefined) {
+        params.append(
+          "move_cards_to_column_id",
+          options.move_cards_to_column_id.toString()
+        );
+      }
+      if (options?.move_metrics_to_column_id !== undefined) {
+        params.append(
+          "move_metrics_to_column_id",
+          options.move_metrics_to_column_id.toString()
+        );
+      }
+      const query = params.toString();
+      await this.delete<Column>(
+        query
+          ? `/boards/${boardId}/columns/${columnId}?${query}`
+          : `/boards/${boardId}/columns/${columnId}`
+      );
+      return { data: "The column has been deleted" };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async createCardsMany(
+    cards: Record<string, unknown>[],
+    options?: { exceeding_reason?: string; reporter_user_id?: number }
+  ): Promise<{
+    data?: unknown;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.post("/cards/createMany", {
+        cards,
+        ...options,
+      });
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async updateCardsMany(
+    cards: Record<string, unknown>[],
+    options?: { exceeding_reason?: string; reporter_user_id?: number }
+  ): Promise<{
+    data?: unknown;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.post("/cards/updateMany", {
+        cards,
+        ...options,
+      });
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async deleteCardsMany(
+    cardIds: number[],
+    options?: { exceeding_reason?: string }
+  ): Promise<{
+    data?: unknown;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.post("/cards/deleteMany", {
+        card_ids: cardIds,
+        ...options,
+      });
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async getBlockReasons(): Promise<{
+    data?: BlockReasons;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.get<BlockReasons>("/blockReasons?is_enabled=1");
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async getCardBlockReason(cardId: string): Promise<{
+    data?: CardBlockReason;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.get<CardBlockReason>(
+        `/cards/${cardId}/blockReason`
+      );
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async blockCard(
+    cardId: string,
+    params: {
+      reason_id: number;
+      comment?: string;
+      users?: number[];
+      date?: string;
+    }
+  ): Promise<{
+    data?: CardBlockReason;
+    error?: Error;
+  }> {
+    try {
+      const data = await this.put<CardBlockReason>(
+        `/cards/${cardId}/blockReason`,
+        params
+      );
+      return { data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async unblockCard(cardId: string): Promise<{
+    data?: string;
+    error?: Error;
+  }> {
+    try {
+      await this.delete(`/cards/${cardId}/blockReason`);
+      return { data: "The card has been unblocked" };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async linkChildCard(
+    parentCardId: string,
+    childCardId: string,
+    params?: {
+      linked_card_position?: number;
+      card_position?: number;
+      exceeding_reason?: string;
+    }
+  ): Promise<{
+    data?: string;
+    error?: Error;
+  }> {
+    try {
+      await this.put(
+        `/cards/${parentCardId}/children/${childCardId}`,
+        params ?? {}
+      );
+      return { data: "Child card linked successfully" };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async unlinkChildCard(
+    parentCardId: string,
+    childCardId: string,
+    exceeding_reason?: string
+  ): Promise<{
+    data?: string;
+    error?: Error;
+  }> {
+    try {
+      const query = exceeding_reason
+        ? `?exceeding_reason=${encodeURIComponent(exceeding_reason)}`
+        : "";
+      await this.delete(
+        `/cards/${parentCardId}/children/${childCardId}${query}`
+      );
+      return { data: "Child card link removed successfully" };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async linkParentCard(
+    childCardId: string,
+    parentCardId: string,
+    params?: {
+      linked_card_position?: number;
+      card_position?: number;
+      exceeding_reason?: string;
+    }
+  ): Promise<{
+    data?: string;
+    error?: Error;
+  }> {
+    try {
+      await this.put(
+        `/cards/${childCardId}/parents/${parentCardId}`,
+        params ?? {}
+      );
+      return { data: "Parent card linked successfully" };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async unlinkParentCard(
+    childCardId: string,
+    parentCardId: string,
+    exceeding_reason?: string
+  ): Promise<{
+    data?: string;
+    error?: Error;
+  }> {
+    try {
+      const query = exceeding_reason
+        ? `?exceeding_reason=${encodeURIComponent(exceeding_reason)}`
+        : "";
+      await this.delete(
+        `/cards/${childCardId}/parents/${parentCardId}${query}`
+      );
+      return { data: "Parent card link removed successfully" };
     } catch (error) {
       return this.handleError(error);
     }

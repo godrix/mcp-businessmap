@@ -1,6 +1,6 @@
 {
   "name": "businessmap-mcp",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "main": "./dist/server.js",
   "bin": {
     "businessmap-mcp": "./dist/server.js"

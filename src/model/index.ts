@@ -10,3 +10,5 @@ export * from "./Board";
 export * from "./Columns";
 export * from "./Lane";
 export * from "./Workspace";
+export * from "./BoardStructure";
+export * from "./BlockReason";

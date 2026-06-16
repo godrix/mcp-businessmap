@@ -1,0 +1,13 @@
+# .mcpbignore example
+# Comments start with #
+*.test.js
+src/**/*.test.ts
+coverage/
+*.log
+.env*
+temp/
+docs/
+openapi.json
+.cursor
+.github
+CHANGELOG.md

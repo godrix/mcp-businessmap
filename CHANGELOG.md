@@ -7,7 +7,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.8.0] - 2025-12-27
+## [1.9.0] - 2026-06-15
+
+This release expands API coverage with context resources, workflow prompts, and tools for workspaces, columns, batch card operations, card linking, and block reasons.
+
+### New Features
+
+- **Context Resources**:
+  - `api://limits` — API request limits for the current account.
+  - `board://{boardId}` — Board details.
+  - `board://{boardId}/structure` — Current board structure (workflows, lanes, columns, cell limits).
+  - `workspace://{workspaceId}` — Workspace details.
+
+- **Workflow Prompts**:
+  - `create-card-workflow` — Guide for creating a card with board/column/lane context.
+  - `link-cards-workflow` — Guide for linking parent and child cards.
+  - `block-card-workflow` — Guide for blocking or unblocking a card.
+
+- **Workspace Tools**:
+  - `get-workspaces` — List workspaces.
+  - `create-workspace` — Create a new workspace.
+  - `update-workspace` — Update an existing workspace.
+
+- **Column Tools**:
+  - `create-column` — Create a column in a board.
+  - `update-column` — Update an existing column.
+  - `delete-column` — Delete a column from a board.
+
+- **Batch Card Tools**:
+  - `create-cards-many` — Create multiple cards in a single request.
+  - `update-cards-many` — Update multiple cards in a single request.
+  - `delete-cards-many` — Delete multiple cards in a single request.
+
+- **Card Link Tools**:
+  - `link-child-card` — Make a card a child of a parent card.
+  - `unlink-child-card` — Remove a parent-child link.
+  - `link-parent-card` — Make a card a parent of a child card.
+  - `unlink-parent-card` — Remove a parent-child link.
+
+- **Card Block Reason Tools**:
+  - `get-block-reasons` — List enabled block reasons.
+  - `get-card-block-reason` — Get the block reason for a card.
+  - `block-card` — Block a card with a reason.
+  - `unblock-card` — Remove the block from a card.
+
+### Fixed
+
+- **Workspace API URL**: Fixed `get-workspace` endpoint from `/workspace/{id}` to `/workspaces/{id}`.
+- **HTTP PUT requests**: `request.put()` now sends a request body, required for block and card link operations.
+
+### Version Update
+
+- The package version has been updated from `1.8.0` to `1.9.0`.
+
 
 ### Fixed
 
@@ -146,7 +198,8 @@ This release introduces new functionalities for card management, a read-only mod
 
 - The package version has been updated from `1.0.1` to `1.1.0`.
 
-[Unreleased]: https://github.com/godrix/mcp-businessmap/compare/v1.8.0...HEAD
+[Unreleased]: https://github.com/godrix/mcp-businessmap/compare/v1.9.0...HEAD
+[1.9.0]: https://github.com/godrix/mcp-businessmap/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/godrix/mcp-businessmap/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/godrix/mcp-businessmap/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/godrix/mcp-businessmap/compare/v1.3.0...v1.6.0
