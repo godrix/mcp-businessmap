@@ -1,5 +1,5 @@
 {
-  "name": "businessmap-mcp",
+  "name": "@godrix/mcp/businessmap",
   "version": "1.9.0",
   "main": "./dist/server.js",
   "bin": {
