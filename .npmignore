@@ -1,0 +1,38 @@
+# Fontes TypeScript (publicado só dist/)
+src/
+test/
+scripts/
+tsconfig.json
+vitest.config.ts
+
+# IDE, Cursor e configs locais
+.cursor/
+.vscode/
+*.code-workspace
+
+# Git e CI
+.git/
+.github/
+.gitignore
+
+# Documentação/planejamento de dev (SKILL.md e README.md vão no pacote via package.json files)
+PROMPT.md
+
+# Logs, cache e ambiente
+*.log
+npm-debug.log*
+coverage/
+.nyc_output/
+*.tsbuildinfo
+.env
+.env.*
+
+# SO
+.DS_Store
+Thumbs.db
+
+# Source maps (opcional no pacote)
+dist/**/*.map
+
+# Dependências (npm já ignora, redundância explícita)
+node_modules/

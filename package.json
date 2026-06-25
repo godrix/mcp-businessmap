@@ -6,10 +6,12 @@
     "businessmap-mcp": "./dist/server.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run build",
     "build": "tsc",
     "prepare": "npm run build",
     "dev": "npm run build && export DANGEROUSLY_OMIT_AUTH=true && npx @modelcontextprotocol/inspector node ./dist/server.js",
+    "pack:mcpb": "npm run build && npx --yes @anthropic-ai/mcpb pack",
+    "pack:mcpb:slim": "npm run build && rm -rf node_modules && npm ci --omit=dev --ignore-scripts && npx --yes @anthropic-ai/mcpb pack",
     "publish:next": "npm run build && npm publish --access public --tag next",
     "publish:latest": "npm run build && npm publish --access public --tag latest",
     "version:next": "npm version prerelease --preid=next",

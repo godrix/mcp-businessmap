@@ -1,0 +1,112 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.repository }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm run test --if-present
+
+      - name: Build
+        run: npm run build
+
+      - name: Read package metadata
+        id: pkg
+        run: |
+          echo "name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
+          echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Check npm publish status
+        id: npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          NAME="${{ steps.pkg.outputs.name }}"
+          VERSION="${{ steps.pkg.outputs.version }}"
+          if npm view "${NAME}@${VERSION}" version >/dev/null 2>&1; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            echo "Version ${NAME}@${VERSION} already on npm — skipping publish."
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+            echo "Version ${NAME}@${VERSION} not on npm — will publish."
+          fi
+
+      - name: Publish to npm
+        if: steps.npm.outputs.publish == 'true'
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Sync manifest.json version
+        if: hashFiles('manifest.json') != ''
+        run: node scripts/sync-manifest-version.mjs
+
+      - name: Build MCPB bundle
+        if: hashFiles('manifest.json') != ''
+        run: npm run pack:mcpb:slim
+
+      - name: Resolve MCPB artifact
+        id: mcpb
+        if: hashFiles('manifest.json') != ''
+        run: |
+          FILE=$(find . -maxdepth 1 -name '*.mcpb' -type f | head -1)
+          if [ -z "$FILE" ]; then
+            echo "No .mcpb file found after pack"
+            exit 1
+          fi
+          echo "file=$FILE" >> "$GITHUB_OUTPUT"
+          ls -lh "$FILE"
+
+      - name: Check GitHub release tag
+        id: tag
+        run: |
+          TAG="v${{ steps.pkg.outputs.version }}"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        if: |
+          hashFiles('manifest.json') != '' &&
+          (steps.npm.outputs.publish == 'true' || steps.tag.outputs.exists == 'false')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: ${{ steps.tag.outputs.tag }}
+          files: ${{ steps.mcpb.outputs.file }}
+          generate_release_notes: true
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

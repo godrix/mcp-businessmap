@@ -1,6 +1,83 @@
 # MCP Businessmap
 
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=businessmap&config=eyJlbnYiOnsiQlVTSU5FU1NNQVBfQVBJX1VSTCI6Imh0dHBzOi8vZXhhbXBsZS5rYW5iYW5pemUuY29tL2FwaS92MiIsIkJVU0lORVNTTUFQX0FQSV9LRVkiOiJ5b3VyX2FwaV9rZXkiLCJCVVNJTkVTU01BUF9SRUFEX09OTFkiOiJmYWxzZSJ9LCJjb21tYW5kIjoibnB4IC15IEBnb2RyaXgvbWNwLWJ1c2luZXNzbWFwIn0=)
+
 This project is an unofficial MCP (Model Context Protocol) server for [Businessmap](https://businessmap.io) (formerly Kanbanize), designed to expose a set of tools for managing business-related entities such as boards, cards, columns, and user information. It was built to facilitate interaction with Large Language Models (LLMs) and similar applications through a standardized protocol.
+
+## Prerequisites
+
+- Node.js 18+
+- Businessmap API key and base URL (`https://your-subdomain.kanbanize.com/api/v2`)
+
+## Quick Start (npx)
+
+No clone or build required — the published npm package includes compiled JavaScript.
+
+### Cursor / Claude Desktop (`mcp.json`)
+
+```json
+{
+  "mcpServers": {
+    "businessmap": {
+      "command": "npx",
+      "args": ["-y", "@godrix/mcp-businessmap"],
+      "env": {
+        "BUSINESSMAP_API_URL": "https://example.kanbanize.com/api/v2",
+        "BUSINESSMAP_API_KEY": "your_api_key",
+        "BUSINESSMAP_READ_ONLY": "false"
+      }
+    }
+  }
+}
+```
+
+Restart your MCP client after saving. Or use the **Install MCP Server** button at the top of this README.
+
+### Global install (alternative)
+
+```bash
+npm install -g @godrix/mcp-businessmap
+```
+
+Then use `"command": "businessmap-mcp"` in `mcp.json`.
+
+### Environment variables
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `BUSINESSMAP_API_URL` | **Yes** | — | Base API URL, e.g. `https://your-subdomain.kanbanize.com/api/v2` |
+| `BUSINESSMAP_API_KEY` | **Yes** | — | API key from Businessmap |
+| `BUSINESSMAP_READ_ONLY` | No | `false` | When `true`, disables all mutation tools |
+| `BUSINESSMAP_DEFAULT_WORKSPACE_ID` | No | — | Default workspace ID for operations that need workspace context |
+
+See `.env.example` for a template when developing locally.
+
+### Local development (optional)
+
+```bash
+git clone https://github.com/godrix/mcp-businessmap.git
+cd mcp-businessmap
+npm install
+cp .env.example .env
+npm run build
+```
+
+Point your MCP client at the clone:
+
+```json
+{
+  "mcpServers": {
+    "businessmap": {
+      "command": "node",
+      "args": ["/absolute/path/to/mcp-businessmap/dist/server.js"],
+      "env": {
+        "BUSINESSMAP_API_URL": "https://example.kanbanize.com/api/v2",
+        "BUSINESSMAP_API_KEY": "your_api_key"
+      }
+    }
+  }
+}
+```
 
 ## Available Tools
 
@@ -106,95 +183,6 @@ Prompts provide reusable workflow templates for common operations:
 | `create-card-workflow` | Guide for creating a card with board/column/lane context |
 | `link-cards-workflow` | Guide for linking parent and child cards |
 | `block-card-workflow` | Guide for blocking or unblocking a card |
-
-## Getting Started
-
-To use this MCP server with your LLM, follow these steps:
-
-### 1. Set Up Node.js and NPM
-
-First, make sure you have Node.js (which includes npm) installed on your system. You can download it from [nodejs.org](https://nodejs.org/).
-
-### 2. Connect to Your LLM
-
-## Quick Installation in Cursor
-
-[![Add to Cursor](https://img.shields.io/badge/Add%20to-Cursor-blue?style=for-the-badge&logo=cursor)](https://cursor.sh/settings/mcp)
-
-### Quick Setup for Cursor
-
-[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=businessmap&config=eyJjb21tYW5kIjoibnB4IC15IEBnb2RyaXgvbWNwLWJ1c2luZXNzbWFwIn0=)
-
-1. **Open Cursor** and go to `Settings > Features > MCP`
-2. **Add a new server** with the following configuration:
-
-```json
-{
-  "businessmap": {
-    "command": "npx",
-    "args": [
-      "-y",
-      "@godrix/mcp-businessmap"
-    ]
-  }
-}
-```
-
-3. **Save** and **restart** Cursor
-4. **Start using** Businessmap tools directly in the chat!
-
-### Installation via NPM
-
-```bash
-npm install -g @godrix/mcp-businessmap
-```
-
-
-To connect this MCP server to your LLM, you need to configure it in your `mcp.json` file. This file tells your LLM environment how to discover and interact with the MCP server.
-
-Add the following configuration to your `mcp.json` file:
-
-```json
-{
-  "servers": [
-    {
-      "name": "businessmap",
-      "command": "npx",
-      "args": ["-y", "@godrix/mcp-businessmap"],
-      "envs": {
-        "BUSINESSMAP_API_URL": "https://example.kanbanize.com/api/v2",
-        "BUSINESSMAP_API_KEY": "your_businessmap_api_key"
-        // "BUSINESSMAP_READ_ONLY": "true" optional, default value is false
-        // "BUSINESSMAP_DEFAULT_WORKSPACE_ID": "123" optional - Sets the BusinessMap workspace ID
-      }
-    }
-  ]
-}
-```
-
-### Environment Variables
-
-#### `BUSINESSMAP_READ_ONLY`
-
-- **Purpose**: This optional environment variable controls whether the server operates in read-only mode.
-- **Default value**: `false` (mutation operations are enabled by default).
-- **Behavior**: If set to `true`, all tools that perform mutation operations (such as creating, updating, and deleting cards, comments, co-owners, subtasks, columns, workspaces, card links, and block reasons) will be disabled. This ensures that the server only retrieves data and does not modify any entities in BusinessMap.
-
-#### `BUSINESSMAP_DEFAULT_WORKSPACE_ID`
-
-- **Purpose**: This optional environment variable sets the default BusinessMap workspace ID to be used by the server.
-- **Default value**: `undefined` (no default workspace ID).
-- **Behavior**: When set, this workspace ID will be used as the default workspace for operations that require a workspace context. This can help simplify operations by avoiding the need to specify the workspace ID repeatedly.
-
-
-**Note:**
-
-- Replace `"https://example.kanbanize.com/api/v2"` with the actual base API URL that your `@godrix/mcp-businessmap` server needs to connect to.
-- Replace `"your_businessmap_api_key"` with your actual API key.
-- The `command` and `args` specify how to run the MCP server.
-- The `envs` section provides the environment variables necessary for the `@godrix/mcp-businessmap` server operation.
-
-After configuring `mcp.json`, your LLM should be able to discover and call the tools exposed by this server (e.g., `Board Tools`, `Card Tools`). Consult your LLM's documentation for specific instructions on how to load `mcp.json` configurations.
 
 ## Support and Contribution
 
