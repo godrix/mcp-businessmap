@@ -1,7 +1,7 @@
 {
   "manifest_version": "0.2",
   "name": "businessmap",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "description": "MCP server for Businessmap Kanbanize, exposing tools for managing business entities like boards, cards, and columns, facilitating LLM interaction.",
   "author": {
     "name": "Carlos Godri",
