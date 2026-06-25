@@ -28,6 +28,8 @@ jobs:
           node-version: "20"
           registry-url: https://registry.npmjs.org
           cache: npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Install dependencies
         run: npm ci
@@ -59,6 +61,19 @@ jobs:
             echo "publish=true" >> "$GITHUB_OUTPUT"
             echo "Version ${NAME}@${VERSION} not on npm — will publish."
           fi
+
+      - name: Verify npm authentication
+        if: steps.npm.outputs.publish == 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${NODE_AUTH_TOKEN}" ]; then
+            echo "::error::NPM_TOKEN secret missing. GitHub → Settings → Secrets and variables → Actions → Secrets (not Variables)."
+            exit 1
+          fi
+          echo "Logged in to npm as: $(npm whoami)"
+          echo "Publishing ${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }}"
 
       - name: Publish to npm
         if: steps.npm.outputs.publish == 'true'
