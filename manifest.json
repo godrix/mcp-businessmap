@@ -1,7 +1,7 @@
 {
   "manifest_version": "0.2",
   "name": "businessmap",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "MCP server for Businessmap Kanbanize, exposing tools for managing business entities like boards, cards, and columns, facilitating LLM interaction.",
   "author": {
     "name": "Carlos Godri",
@@ -25,59 +25,218 @@
     }
   },
   "tools": [
-    { "name": "get-api-limits", "description": "Get the hourly and minutely limits for the api requests" },
-    { "name": "get-boards", "description": "Get a list of boards" },
-    { "name": "get-board", "description": "Get the details of a single board" },
-    { "name": "get-columns", "description": "Get a list of the columns in a specified board." },
-    { "name": "get-column", "description": "Get the details of a single column" },
-    { "name": "create-column", "description": "Create a column in a board" },
-    { "name": "update-column", "description": "Update an existing column" },
-    { "name": "delete-column", "description": "Delete a column from a board" },
-    { "name": "get-lanes", "description": "Get a list of lanes in a specified board" },
-    { "name": "get-lane", "description": "Get the details of a single lane" },
-    { "name": "create-lane", "description": "Create a lane" },
-    { "name": "update-lane", "description": "Update an existing lane" },
-    { "name": "delete-lane", "description": "Delete a lane" },
-    { "name": "get-workspaces", "description": "Get a list of workspaces" },
-    { "name": "get-workspace", "description": "Get the details of a single workspace" },
-    { "name": "create-workspace", "description": "Create a new workspace" },
-    { "name": "update-workspace", "description": "Update an existing workspace" },
-    { "name": "get-user", "description": "Get the details of a single user" },
-    { "name": "get-me", "description": "Get the details of the current logged user" },
-    { "name": "get-card", "description": "Get the details of a single card" },
-    { "name": "get-cards", "description": "Get a list of cards matching some optional criteria" },
-    { "name": "create-card", "description": "Create a card" },
-    { "name": "update-card", "description": "Update an existing card" },
-    { "name": "delete-card", "description": "Delete a card" },
-    { "name": "create-cards-many", "description": "Create multiple cards in a single request" },
-    { "name": "update-cards-many", "description": "Update multiple cards in a single request" },
-    { "name": "delete-cards-many", "description": "Delete multiple cards in a single request" },
-    { "name": "get-card-comments", "description": "Get a card's comments" },
-    { "name": "get-card-comment", "description": "Get the details of a comment for a card" },
-    { "name": "add-card-comment", "description": "Add a comment to a card" },
-    { "name": "add-formatted-card-comment", "description": "Add a formatted comment to a card with HTML rich formatting. Accepts HTML content directly. Internally creates a plain text comment first, then immediately updates it with the provided HTML formatting." },
-    { "name": "update-card-comment", "description": "Update the details of a comment for a card" },
-    { "name": "delete-card-comment", "description": "Delete a comment for a card" },
-    { "name": "get-card-co-owners", "description": "Get a card's co-owners" },
-    { "name": "check-card-co-owner", "description": "Check if a user is a co-owner of a card, the user is a co-owner of the card! Otherwise, you would have gotten a 404 error." },
-    { "name": "add-card-co-owner", "description": "Add a user as a co-owner of a card" },
-    { "name": "remove-card-co-owner", "description": "Remove a user as a co-owner of a card" },
-    { "name": "get-linked-cards", "description": "Get a list of the cards that are linked to a given card ordered by position." },
-    { "name": "link-child-card", "description": "Make a card a child of a parent card" },
-    { "name": "unlink-child-card", "description": "Remove the parent-child link between two cards" },
-    { "name": "link-parent-card", "description": "Make a card a parent of a child card" },
-    { "name": "unlink-parent-card", "description": "Remove the parent-child link between two cards" },
-    { "name": "get-block-reasons", "description": "Get the list of enabled block reasons available in the account" },
-    { "name": "get-card-block-reason", "description": "Get the block reason details for a card" },
-    { "name": "block-card", "description": "Block a card with a block reason" },
-    { "name": "unblock-card", "description": "Remove the block from a card" },
-    { "name": "get-card-subtasks", "description": "Get a card's subtasks" },
-    { "name": "get-card-subtask", "description": "Get the details of a subtask for a card" },
-    { "name": "add-card-subtask", "description": "Add a subtask to a card" },
-    { "name": "add-formatted-card-subtask", "description": "Add a formatted subtask to a card with HTML rich formatting. Unlike comments, subtasks accept HTML directly in creation." },
-    { "name": "update-card-subtask", "description": "Update the details of a subtask for a card" },
-    { "name": "update-formatted-card-subtask", "description": "Update a subtask with HTML rich formatting. Unlike comments, subtasks accept HTML directly in updates." },
-    { "name": "delete-card-subtask", "description": "Delete a subtask for a card" }
+    {
+      "name": "get-api-limits",
+      "description": "Get the hourly and minutely limits for the api requests"
+    },
+    {
+      "name": "get-boards",
+      "description": "Get a list of boards"
+    },
+    {
+      "name": "get-board",
+      "description": "Get the details of a single board"
+    },
+    {
+      "name": "get-columns",
+      "description": "Get a list of the columns in a specified board."
+    },
+    {
+      "name": "get-column",
+      "description": "Get the details of a single column"
+    },
+    {
+      "name": "create-column",
+      "description": "Create a column in a board"
+    },
+    {
+      "name": "update-column",
+      "description": "Update an existing column"
+    },
+    {
+      "name": "delete-column",
+      "description": "Delete a column from a board"
+    },
+    {
+      "name": "get-lanes",
+      "description": "Get a list of lanes in a specified board"
+    },
+    {
+      "name": "get-lane",
+      "description": "Get the details of a single lane"
+    },
+    {
+      "name": "create-lane",
+      "description": "Create a lane"
+    },
+    {
+      "name": "update-lane",
+      "description": "Update an existing lane"
+    },
+    {
+      "name": "delete-lane",
+      "description": "Delete a lane"
+    },
+    {
+      "name": "get-workspaces",
+      "description": "Get a list of workspaces"
+    },
+    {
+      "name": "get-workspace",
+      "description": "Get the details of a single workspace"
+    },
+    {
+      "name": "create-workspace",
+      "description": "Create a new workspace"
+    },
+    {
+      "name": "update-workspace",
+      "description": "Update an existing workspace"
+    },
+    {
+      "name": "get-user",
+      "description": "Get the details of a single user"
+    },
+    {
+      "name": "get-me",
+      "description": "Get the details of the current logged user"
+    },
+    {
+      "name": "get-card",
+      "description": "Get the details of a single card"
+    },
+    {
+      "name": "get-cards",
+      "description": "Get a list of cards matching some optional criteria"
+    },
+    {
+      "name": "create-card",
+      "description": "Create a card"
+    },
+    {
+      "name": "update-card",
+      "description": "Update an existing card"
+    },
+    {
+      "name": "delete-card",
+      "description": "Delete a card"
+    },
+    {
+      "name": "create-cards-many",
+      "description": "Create multiple cards in a single request"
+    },
+    {
+      "name": "update-cards-many",
+      "description": "Update multiple cards in a single request"
+    },
+    {
+      "name": "delete-cards-many",
+      "description": "Delete multiple cards in a single request"
+    },
+    {
+      "name": "get-card-comments",
+      "description": "Get a card's comments"
+    },
+    {
+      "name": "get-card-comment",
+      "description": "Get the details of a comment for a card"
+    },
+    {
+      "name": "add-card-comment",
+      "description": "Add a comment to a card"
+    },
+    {
+      "name": "add-formatted-card-comment",
+      "description": "Add a formatted comment to a card with HTML rich formatting. Accepts HTML content directly. Internally creates a plain text comment first, then immediately updates it with the provided HTML formatting."
+    },
+    {
+      "name": "update-card-comment",
+      "description": "Update the details of a comment for a card"
+    },
+    {
+      "name": "delete-card-comment",
+      "description": "Delete a comment for a card"
+    },
+    {
+      "name": "get-card-co-owners",
+      "description": "Get a card's co-owners"
+    },
+    {
+      "name": "check-card-co-owner",
+      "description": "Check if a user is a co-owner of a card, the user is a co-owner of the card! Otherwise, you would have gotten a 404 error."
+    },
+    {
+      "name": "add-card-co-owner",
+      "description": "Add a user as a co-owner of a card"
+    },
+    {
+      "name": "remove-card-co-owner",
+      "description": "Remove a user as a co-owner of a card"
+    },
+    {
+      "name": "get-linked-cards",
+      "description": "Get a list of the cards that are linked to a given card ordered by position."
+    },
+    {
+      "name": "link-child-card",
+      "description": "Make a card a child of a parent card"
+    },
+    {
+      "name": "unlink-child-card",
+      "description": "Remove the parent-child link between two cards"
+    },
+    {
+      "name": "link-parent-card",
+      "description": "Make a card a parent of a child card"
+    },
+    {
+      "name": "unlink-parent-card",
+      "description": "Remove the parent-child link between two cards"
+    },
+    {
+      "name": "get-block-reasons",
+      "description": "Get the list of enabled block reasons available in the account"
+    },
+    {
+      "name": "get-card-block-reason",
+      "description": "Get the block reason details for a card"
+    },
+    {
+      "name": "block-card",
+      "description": "Block a card with a block reason"
+    },
+    {
+      "name": "unblock-card",
+      "description": "Remove the block from a card"
+    },
+    {
+      "name": "get-card-subtasks",
+      "description": "Get a card's subtasks"
+    },
+    {
+      "name": "get-card-subtask",
+      "description": "Get the details of a subtask for a card"
+    },
+    {
+      "name": "add-card-subtask",
+      "description": "Add a subtask to a card"
+    },
+    {
+      "name": "add-formatted-card-subtask",
+      "description": "Add a formatted subtask to a card with HTML rich formatting. Unlike comments, subtasks accept HTML directly in creation."
+    },
+    {
+      "name": "update-card-subtask",
+      "description": "Update the details of a subtask for a card"
+    },
+    {
+      "name": "update-formatted-card-subtask",
+      "description": "Update a subtask with HTML rich formatting. Unlike comments, subtasks accept HTML directly in updates."
+    },
+    {
+      "name": "delete-card-subtask",
+      "description": "Delete a subtask for a card"
+    }
   ],
   "license": "MIT"
 }
