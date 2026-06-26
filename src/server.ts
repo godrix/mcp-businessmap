@@ -23,7 +23,7 @@ import { env } from "./utils/env";
 async function main() {
   // Server MCP
   const server = new McpServer({
-    name: "@godrix/mcp-businessmap",
+    name: "@godrix/businessmap-mcp",
     version: "1.9.0",
   });
 

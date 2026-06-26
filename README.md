@@ -1,6 +1,6 @@
 # MCP Businessmap
 
-[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=businessmap&config=eyJlbnYiOnsiQlVTSU5FU1NNQVBfQVBJX1VSTCI6Imh0dHBzOi8vZXhhbXBsZS5rYW5iYW5pemUuY29tL2FwaS92MiIsIkJVU0lORVNTTUFQX0FQSV9LRVkiOiJ5b3VyX2FwaV9rZXkiLCJCVVNJTkVTU01BUF9SRUFEX09OTFkiOiJmYWxzZSJ9LCJjb21tYW5kIjoibnB4IC15IEBnb2RyaXgvbWNwLWJ1c2luZXNzbWFwIn0=)
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=businessmap&config=eyJlbnYiOnsiQlVTSU5FU1NNQVBfQVBJX1VSTCI6Imh0dHBzOi8vZXhhbXBsZS5rYW5iYW5pemUuY29tL2FwaS92MiIsIkJVU0lORVNTTUFQX0FQSV9LRVkiOiJ5b3VyX2FwaV9rZXkiLCJCVVNJTkVTU01BUF9SRUFEX09OTFkiOiJmYWxzZSJ9LCJjb21tYW5kIjoibnB4IC15IEBnb2RyaXgvYnVzaW5lc3NtYXAtbWNwIn0=)
 
 This project is an unofficial MCP (Model Context Protocol) server for [Businessmap](https://businessmap.io) (formerly Kanbanize), designed to expose a set of tools for managing business-related entities such as boards, cards, columns, and user information. It was built to facilitate interaction with Large Language Models (LLMs) and similar applications through a standardized protocol.
 
@@ -20,7 +20,7 @@ No clone or build required — the published npm package includes compiled JavaS
   "mcpServers": {
     "businessmap": {
       "command": "npx",
-      "args": ["-y", "@godrix/mcp-businessmap"],
+      "args": ["-y", "@godrix/businessmap-mcp"],
       "env": {
         "BUSINESSMAP_API_URL": "https://example.kanbanize.com/api/v2",
         "BUSINESSMAP_API_KEY": "your_api_key",
@@ -36,7 +36,7 @@ Restart your MCP client after saving. Or use the **Install MCP Server** button a
 ### Global install (alternative)
 
 ```bash
-npm install -g @godrix/mcp-businessmap
+npm install -g @godrix/businessmap-mcp
 ```
 
 Then use `"command": "businessmap-mcp"` in `mcp.json`.
